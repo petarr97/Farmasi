@@ -10,53 +10,62 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
+import model.Korisnik;
 import model.TableModel;
+import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.TableView;
 
-public class FinansijeControler implements ActionListener {
+public class TipPlacanjControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
+	boolean zabrana = true;
 	TableModel tableModel = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
-		ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
+		Korisnik.getInstance().setTrenutnaTabela("smjestajneJednice");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
 		centerView = view.getCenterView();
 		centerView.removeAll();
 		centerView.repaint();
+		view.setState(new WorkingOnTableState(view));
 
-		String[] columnNames = new String[5];
-		columnNames[0] = "#ID";
-		columnNames[1] = "Narudzba ID";
-		columnNames[2] = "Proizvod ID";
-		columnNames[3] = "Kolicina";
-		columnNames[4] = "Cijena";
+		if (e.getActionCommand().equals("prikaz")) {
 
-		try {
-			while (rs.next()) {
-				ArrayList<String> pomocna = new ArrayList<String>();
+			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+			String[] columnNames = null;
 
-				pomocna.add(rs.getString(1));
-				pomocna.add(rs.getString(2));
-				pomocna.add(rs.getString(3));
-				pomocna.add(rs.getString(4));
-				pomocna.add(rs.getString(5));
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_TIP_PLACANJA}");
 
-				data.add(pomocna);
-				// pomocna.clear();
+			columnNames = new String[2];
+			columnNames[0] = "#ID";
+			columnNames[1] = "Naziv";
+
+			int br_redova = 0;
+
+			try {
+
+				int i = 0;
+				while (rs.next()) {
+					ArrayList<String> pomocna = new ArrayList<String>();
+					pomocna.add(rs.getString(1));
+					pomocna.add(rs.getString(2));
+					data.add(pomocna);
+					// pomocna.clear();
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			centerView.removeAll();
+			centerView.createTable();
+			createModel(data, columnNames);
+			zabrana = false;
+
 		}
-		centerView.removeAll();
-		centerView.createTable();
-		createModel(data, columnNames);
 	}
 
 	public void createModel(ArrayList<ArrayList<String>> data, String[] columns) {
@@ -71,4 +80,5 @@ public class FinansijeControler implements ActionListener {
 		centerView.newModel = new TableModel(data1, columns);
 		centerView.update();
 	}
+
 }

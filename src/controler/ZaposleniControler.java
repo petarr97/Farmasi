@@ -44,14 +44,13 @@ public class ZaposleniControler implements ActionListener {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call VratiKorisnikeSistema}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_PROIZVODE}");
 
-			columnNames = new String[5];
+			columnNames = new String[4];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Tip zaposlenog";
-			columnNames[2] = "Ime";
-			columnNames[3] = "Prezime";
-			columnNames[4] = "Maticni broj";
+			columnNames[1] = "Naziv proizvoda";
+			columnNames[2] = "Cijena";
+			columnNames[3] = "PDV Stopa";
 
 			int br_redova = 0;
 
@@ -65,7 +64,6 @@ public class ZaposleniControler implements ActionListener {
 					pomocna.add(rs.getString(2));
 					pomocna.add(rs.getString(3));
 					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(5));
 
 					data.add(pomocna);
 					// pomocna.clear();
@@ -88,7 +86,7 @@ public class ZaposleniControler implements ActionListener {
 		} else if (e.getActionCommand().equals("dodavanje") && Korisnik.getInstance().getDodavanje() == 1
 				&& Korisnik.getInstance().getTipKorisnika() == 1) {
 			DodavanjeFrame dodajKorisnik = new DodavanjeFrame();
-			dodajKorisnik.dodavanjeZaposlenog();
+			// dodajKorisnik.dodavanjeZaposlenog();
 			dodajKorisnik.show();
 			view.setState(new ReadyState(view));
 			zabrana = false;

@@ -40,16 +40,18 @@ public class PoslovniSistemiControler implements ActionListener {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call VratiPoslovneSisteme}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_NARUDZBE}");
 
-			columnNames = new String[7];
+			columnNames = new String[9];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Naziv";
-			columnNames[2] = "Drzava";
-			columnNames[3] = "Grad";
-			columnNames[4] = "Adresa";
-			columnNames[5] = "email";
-			columnNames[6] = "Reg. br.";
+			columnNames[1] = "Tip placanja";
+			columnNames[2] = "RadnikID";
+			columnNames[3] = "KupacID";
+			columnNames[4] = "Datum";
+			columnNames[5] = "Status";
+			columnNames[6] = "Iznos bez pdv";
+			columnNames[7] = "PDV";
+			columnNames[8] = "Iznos sa PDV";
 
 			int br_redova = 0;
 
@@ -66,7 +68,8 @@ public class PoslovniSistemiControler implements ActionListener {
 					pomocna.add(rs.getString(5));
 					pomocna.add(rs.getString(6));
 					pomocna.add(rs.getString(7));
-
+					pomocna.add(rs.getString(8));
+					pomocna.add(rs.getString(9));
 					data.add(pomocna);
 					// pomocna.clear();
 				}
@@ -82,7 +85,7 @@ public class PoslovniSistemiControler implements ActionListener {
 		} else if (e.getActionCommand().equals("dodavanje")) {
 			view.setState(new ReadyState(view));
 			DodavanjeFrame dodavanje = new DodavanjeFrame();
-			dodavanje.dodajPoslovniSistem();
+			dodavanje.dodavanjeNarudzbe();
 			dodavanje.show();
 		}
 

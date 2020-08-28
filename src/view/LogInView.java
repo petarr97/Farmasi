@@ -135,22 +135,16 @@ public class LogInView extends JFrame {
 	}
 
 	public void provjeriPodatke() {
-		ResultSet rs = ProcedureClass.getInstance().procedura2("{call Login(?,?)}", username.getText(),
+		ResultSet rs = ProcedureClass.getInstance().procedura2("{call LOGIN(?,?)}", username.getText(),
 				String.valueOf(password.getPassword()));
 
 		try {
 			while (rs.next()) {
-				if (rs.getString(1) != null && (username.getText().equals(rs.getString(7)))
-						&& String.valueOf(password.getPassword()).equals(rs.getString(8))) {
+				if (rs.getString(1) != null && (username.getText().equals(rs.getString(1)))
+						&& String.valueOf(password.getPassword()).equals(rs.getString(2))) {
 					Korisnik korisnik = Korisnik.getInstance();
 					korisnik.setUsername(username.getText());
 					korisnik.setPassword(String.valueOf(password.getPassword()));
-					korisnik.setID(Integer.valueOf(rs.getString(1)));
-					korisnik.setPrikaz(rs.getInt(2));
-					korisnik.setDodavanje(rs.getInt(3));
-					korisnik.setBrisanje(rs.getInt(4));
-					korisnik.setIzmjena(rs.getInt(5));
-					korisnik.setTipKorisnika(rs.getInt(6));
 
 					dispose();
 					new ApplicationView().show();
