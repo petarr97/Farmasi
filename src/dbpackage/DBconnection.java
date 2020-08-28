@@ -10,9 +10,9 @@ public class DBconnection {
 
 	public static Connection conn = null;
 	public static DBconnection instance = null;
-	public static String dbURL = "jdbc:sqlserver://78.28.157.8:1433;databaseName=PIS2020";
-	public static String user = "EtfPIS2020G4";
-	public static String password = "EtfPIS2020G49278";
+	public static String dbURL = "jdbc:sqlserver://DESKTOP-KG2I6N9;Database=Narudžbaa";
+	public static String user = "test";
+	public static String password = "test1234";
 
 	public static DBconnection getInstance() {
 		if (instance == null) {

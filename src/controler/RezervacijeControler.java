@@ -40,16 +40,16 @@ public class RezervacijeControler implements ActionListener {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call vratiSveRezervacije}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_KUPCE}");
 
 			columnNames = new String[7];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Naziv PS";
-			columnNames[2] = "Broj SJ";
-			columnNames[3] = "Ime";
-			columnNames[4] = "Prezime";
-			columnNames[5] = "Status";
-			columnNames[6] = "Interval rezervacije";
+			columnNames[1] = "MjestoID";
+			columnNames[2] = "Ime";
+			columnNames[3] = "Prezime";
+			columnNames[4] = "Adresa";
+			columnNames[5] = "JMB";
+			columnNames[6] = "Broj telefona";
 
 			int br_redova = 0;
 
@@ -61,11 +61,11 @@ public class RezervacijeControler implements ActionListener {
 
 					pomocna.add(rs.getString(1));
 					pomocna.add(rs.getString(2));
+					pomocna.add(rs.getString(3));
 					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(8));
-					pomocna.add(rs.getString(9));
 					pomocna.add(rs.getString(5));
-					pomocna.add(rs.getString(6) + " - " + rs.getString(7));
+					pomocna.add(rs.getString(6));
+					pomocna.add(rs.getString(7));
 
 					data.add(pomocna);
 					// pomocna.clear();
@@ -79,7 +79,7 @@ public class RezervacijeControler implements ActionListener {
 			createModel(data, columnNames);
 		} else if (e.getActionCommand().equals("dodavanje")) {
 			DodavanjeFrame dodavanje = new DodavanjeFrame();
-			dodavanje.dodavanjeRezervacije();
+			// dodavanje.dodavanjeRezervacije();
 			dodavanje.show();
 			centerView.removeAll();
 

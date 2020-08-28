@@ -42,16 +42,18 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call VratiSveSmjestajneJedinice}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_RADNIKE}");
 
-			columnNames = new String[7];
+			columnNames = new String[9];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Naziv poslovne jedinice";
-			columnNames[2] = "Adresa poslovne jedinice";
-			columnNames[3] = "Grad";
-			columnNames[4] = "Tip smjestajne jedinice";
-			columnNames[5] = "Broj";
-			columnNames[6] = "Cijena";
+			columnNames[1] = "Mjesto ID";
+			columnNames[2] = "Ime";
+			columnNames[3] = "Prezime";
+			columnNames[4] = "Br. telefona";
+			columnNames[5] = "Email";
+			columnNames[6] = "Adresa";
+			columnNames[7] = "Datum rodjenja";
+			columnNames[8] = "Datum zaposlenja";
 
 			int br_redova = 0;
 
@@ -60,14 +62,15 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 				int i = 0;
 				while (rs.next()) {
 					ArrayList<String> pomocna = new ArrayList<String>();
-					pomocna.add(rs.getString(7));
+					pomocna.add(rs.getString(1));
 					pomocna.add(rs.getString(2));
 					pomocna.add(rs.getString(3));
-					pomocna.add(rs.getString(5));
 					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(1));
-					pomocna.add(rs.getString(6) + " KM");
-
+					pomocna.add(rs.getString(5));
+					pomocna.add(rs.getString(6));
+					pomocna.add(rs.getString(7));
+					pomocna.add(rs.getString(8));
+					pomocna.add(rs.getString(9));
 					data.add(pomocna);
 					// pomocna.clear();
 				}
@@ -83,7 +86,7 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 		} else if (e.getActionCommand().equals("dodavanje") && Korisnik.getInstance().getDodavanje() == 1) {
 
 			DodavanjeFrame dSj = new DodavanjeFrame();
-			dSj.dodavanjeSmjestajneJedinice();
+			// dSj.dodavanjeSmjestajneJedinice();
 			dSj.show();
 			centerView.removeAll();
 			view.setState(new ReadyState(view));

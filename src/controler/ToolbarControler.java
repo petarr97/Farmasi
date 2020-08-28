@@ -50,18 +50,18 @@ public class ToolbarControler implements ActionListener {
 
 			if (Korisnik.getInstance().getTrenutnaTabela().equals("poslovniSistem")
 					&& Korisnik.getInstance().getDodavanje() == 1) {
-				dodavanje.dodajPoslovniSistem();
+				// dodavanje.dodajPoslovniSistem();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("smjestajneJednice")
 					&& Korisnik.getInstance().getDodavanje() == 1) {
-				dodavanje.dodavanjeSmjestajneJedinice();
+				// dodavanje.dodavanjeSmjestajneJedinice();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")
 					&& Korisnik.getInstance().getTipKorisnika() == 1 && Korisnik.getInstance().getDodavanje() == 1) {
-				dodavanje.dodavanjeZaposlenog();
+				// dodavanje.dodavanjeZaposlenog();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
-				dodavanje.dodavanjeRezervacije();
+				// dodavanje.dodavanjeRezervacije();
 				dodavanje.show();
 			} else
 				JOptionPane.showMessageDialog(centerView, "Nemate pravo pristupa ovom dijelu sistema!!!");
@@ -163,16 +163,16 @@ public class ToolbarControler implements ActionListener {
 			String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
 
 			if (Korisnik.getInstance().getTrenutnaTabela().equals("poslovniSistem")) {
-				dodavanje.dodajPoslovniSistem();
-				dodavanje.podesiVrijednostiPoslovnogSistema(Integer.valueOf(value));
+				// dodavanje.dodajPoslovniSistem();
+				// dodavanje.podesiVrijednostiPoslovnogSistema(Integer.valueOf(value));
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("smjestajneJednice")) {
-				dodavanje.dodavanjeSmjestajneJedinice();
-				dodavanje.podesiVrijednostiSmjestajneJedinice(Integer.valueOf(value));
+				// dodavanje.dodavanjeSmjestajneJedinice();
+				// dodavanje.podesiVrijednostiSmjestajneJedinice(Integer.valueOf(value));
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")) {
-				dodavanje.dodavanjeZaposlenog();
-				dodavanje.podesiVrijednostiKorisnika(Integer.valueOf(value));
+				// dodavanje.dodavanjeZaposlenog();
+				// dodavanje.podesiVrijednostiKorisnika(Integer.valueOf(value));
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
 				JOptionPane.showMessageDialog(centerView, "Ne postoji mogucnost editovanja rezervacije!!!");
