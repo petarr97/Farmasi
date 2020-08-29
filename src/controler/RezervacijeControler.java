@@ -31,7 +31,7 @@ public class RezervacijeControler implements ActionListener {
 		centerView = view.getCenterView();
 		if (e.getActionCommand().equals("prikaz")) {
 
-			Korisnik.getInstance().setTrenutnaTabela("rezervacije");
+			Korisnik.getInstance().setTrenutnaTabela("kupci");
 
 			centerView.removeAll();
 			centerView.repaint();
@@ -79,7 +79,7 @@ public class RezervacijeControler implements ActionListener {
 			createModel(data, columnNames);
 		} else if (e.getActionCommand().equals("dodavanje")) {
 			DodavanjeFrame dodavanje = new DodavanjeFrame();
-			// dodavanje.dodavanjeRezervacije();
+			dodavanje.dodavanjeKupca();
 			dodavanje.show();
 			centerView.removeAll();
 

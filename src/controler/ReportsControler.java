@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
+import model.Korisnik;
 import model.TableModel;
 import state.WorkingOnTableState;
 import view.ApplicationView;
+import view.DodavanjeFrame;
 import view.TableView;
 
 public class ReportsControler implements ActionListener {
@@ -29,7 +31,7 @@ public class ReportsControler implements ActionListener {
 		centerView.removeAll();
 		centerView.repaint();
 		view.setState(new WorkingOnTableState(view));
-
+		Korisnik.getInstance().setTrenutnaTabela("mjesto");
 		if (e.getActionCommand().equals("prikaz")) {
 
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
@@ -63,6 +65,10 @@ public class ReportsControler implements ActionListener {
 			view.getCenterView().createTable();
 			createModel(data, columnNames);
 			zabrana = false;
+		} else if (e.getActionCommand().equals("dodavanje")) {
+			DodavanjeFrame dm = new DodavanjeFrame();
+			dm.dodavanjeMjesta();
+			dm.show();
 		}
 
 	}

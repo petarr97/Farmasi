@@ -27,7 +27,7 @@ public class PoslovniSistemiControler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Korisnik.getInstance().setTrenutnaTabela("poslovniSistem");
+		Korisnik.getInstance().setTrenutnaTabela("narudzbe");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 		centerView = view.getCenterView();
 		centerView.removeAll();

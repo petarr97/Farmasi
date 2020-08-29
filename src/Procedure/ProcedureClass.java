@@ -3,7 +3,9 @@ package Procedure;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.swing.JOptionPane;
 
 import dbpackage.DBconnection;
 
@@ -37,8 +39,13 @@ public class ProcedureClass {
 			stm.execute();
 			rs = stm.getResultSet();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException error) {
+			JOptionPane.showMessageDialog(null, error.toString());
+
+		} catch (NullPointerException error) {
+			JOptionPane.showMessageDialog(null, error.toString());
+		} catch (Exception error) {
+			JOptionPane.showMessageDialog(null, error.toString());
 		}
 		return rs;
 	}

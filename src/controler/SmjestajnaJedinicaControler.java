@@ -29,7 +29,7 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Korisnik.getInstance().setTrenutnaTabela("smjestajneJednice");
+		Korisnik.getInstance().setTrenutnaTabela("osoblje");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
 		centerView = view.getCenterView();
@@ -80,18 +80,19 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 			}
 			centerView.removeAll();
 			centerView.createTable();
+			view.getTableBrowserView().postaviFilterZaRadnike();
 			createModel(data, columnNames);
 			zabrana = false;
 
-		} else if (e.getActionCommand().equals("dodavanje") && Korisnik.getInstance().getDodavanje() == 1) {
+		} else if (e.getActionCommand().equals("dodavanje")) {
 
 			DodavanjeFrame dSj = new DodavanjeFrame();
-			// dSj.dodavanjeSmjestajneJedinice();
+			dSj.dodavanjeRadnika();
 			dSj.show();
 			centerView.removeAll();
 			view.setState(new ReadyState(view));
 			zabrana = false;
-		} else if (e.getActionCommand().equals("brisanje") && Korisnik.getInstance().getBrisanje() == 1) {
+		} else if (e.getActionCommand().equals("brisanje")) {
 
 			Brisanje brisanje = new Brisanje();
 			brisanje.brisanjeSmjestajneJedinice();

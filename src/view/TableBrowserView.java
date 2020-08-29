@@ -18,8 +18,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import controler.FinansijeControler;
@@ -96,7 +98,16 @@ public class TableBrowserView extends JPanel {
 		buttons[0].addActionListener(new TipPlacanjControler());
 		buttons[0].setActionCommand("prikaz");
 		buttons[1] = new JButton("Dodavanje novog tipa placanja");
-		buttons[1].addActionListener(new TipPlacanjControler());
+		buttons[1].addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DodavanjeFrame dF = new DodavanjeFrame();
+				dF.dodavanjeTipaPlacanja();
+				dF.show();
+
+			}
+		});
 		buttons[1].setActionCommand("dodavanje");
 
 		return buttons;
@@ -161,7 +172,15 @@ public class TableBrowserView extends JPanel {
 		buttons[0].addActionListener(new FinansijeControler());
 		buttons[1] = new JButton("Dodavanje Stavki narduzbe");
 		buttons[1].setActionCommand("rezervacije");
-		buttons[1].addActionListener(new FinansijeControler());
+		buttons[1].addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DodavanjeFrame df = new DodavanjeFrame();
+				df.dodavanjeStavkeNarudzbe();
+				df.show();
+			}
+		});
 
 		return buttons;
 	}
@@ -323,4 +342,21 @@ public class TableBrowserView extends JPanel {
 		}
 	}
 
+	public void postaviFilterZaRadnike() {
+		JPanel filters = new JPanel();
+		filters.setLocation(new Point(0, 300));
+		filters.setPreferredSize(new Dimension(0, 80));
+		filters.setBackground(Color.decode("#303030"));
+		Border border1 = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(240, 240, 240));
+		filters.setLayout(new BoxLayout(filters, BoxLayout.Y_AXIS));
+		filters.setBorder(border1);
+
+		JTextField filter = new JTextField();
+		filters.add(filter);
+		JButton btn = new JButton();
+		filters.add(btn);
+
+		add(filters);
+
+	}
 }

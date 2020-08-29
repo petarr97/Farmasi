@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
+import model.Korisnik;
 import model.TableModel;
 import view.ApplicationView;
 import view.TableView;
@@ -22,6 +23,7 @@ public class FinansijeControler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		Korisnik.getInstance().setTrenutnaTabela("stavke");
 		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 		ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());

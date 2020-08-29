@@ -48,90 +48,142 @@ public class ToolbarControler implements ActionListener {
 
 			view.setState(new ReadyState(view));
 
-			if (Korisnik.getInstance().getTrenutnaTabela().equals("poslovniSistem")
-					&& Korisnik.getInstance().getDodavanje() == 1) {
-				// dodavanje.dodajPoslovniSistem();
+			if (Korisnik.getInstance().getTrenutnaTabela().equals("narudzbe")) {
+				dodavanje.dodavanjeNarudzbe();
 				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("smjestajneJednice")
-					&& Korisnik.getInstance().getDodavanje() == 1) {
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("osoblje")) {
 				// dodavanje.dodavanjeSmjestajneJedinice();
 				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")
-					&& Korisnik.getInstance().getTipKorisnika() == 1 && Korisnik.getInstance().getDodavanje() == 1) {
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("kupci")) {
 				// dodavanje.dodavanjeZaposlenog();
 				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("proizvodi")) {
 				// dodavanje.dodavanjeRezervacije();
 				dodavanje.show();
-			} else
-				JOptionPane.showMessageDialog(centerView, "Nemate pravo pristupa ovom dijelu sistema!!!");
-		} else if (e.getActionCommand().equals("deleteRow")) {
-			if (Korisnik.getInstance().getTrenutnaTabela().equals("poslovniSistem")) {
-				JOptionPane.showMessageDialog(centerView, "Ne postoji mogucnost brisanja poslovnog sistema");
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("stavke")) {
+				// dodavanje.dodavanjeRezervacije();
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
+				// dodavanje.dodavanjeRezervacije();
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
+				// dodavanje.dodavanjeRezervacije();
+				dodavanje.show();
 			}
-			if (Korisnik.getInstance().getTrenutnaTabela().equals("smjestajneJednice")
-					&& Korisnik.getInstance().getBrisanje() == 1) {
+		} else if (e.getActionCommand().equals("deleteRow")) {
+			if (Korisnik.getInstance().getTrenutnaTabela().equals("narudzbe")) {
+
 				int column = 0;
 				int row = centerView.getResultSetTable().getSelectedRow();
 				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
-
-				ArrayList<Integer> rezervacije = vratiRezSmjestajneJedinice(Integer.valueOf(value));
 
 				int i = 0;
-				while (i < rezervacije.size()) {
-					ProcedureClass.procedura2("{ call IzbrisiRezervaciju(?)}", rezervacije.get(i++));
-
-				}
-
 				int result = JOptionPane.showConfirmDialog(centerView,
-						"Da li ste sigurni da zelite da obrisete smjestajnu jednicu?");
+						"Da li ste sigurni da zelite da obrisete narudzbu?");
 				if (result == JOptionPane.YES_OPTION) {
 
-					String procedura = "{call DeleteSmjestajneJedinicePoslovnogSistema(?)}";
-					ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value));
-					procedura = "{call SmjestajnaJedinicaProcedura(?, ?, ?, ?, ?, ?, ?)}";
-					ResultSet rs = ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value), 0, 0, 0,
-							0, "", "Delete");
-
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
-				}
-				// preurediti procedure
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")
-					&& Korisnik.getInstance().getBrisanje() == 1) {
-				int column = 0;
-				int row = centerView.getResultSetTable().getSelectedRow();
-				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
-
-				int confirm = JOptionPane.showConfirmDialog(centerView,
-						"Da li ste sigurni da zelite da izbrisete korisnika?");
-				if (confirm == JOptionPane.YES_OPTION) {
-					String procedura = "{call DeleteKorisnik(?)}";
+					String procedura = "{call OBRISI_NARUDZBU(?)}";
 					ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value));
 
 					view.getCenterView().newModel.removeRow(row);
 					view.getCenterView().revalidate();
 					view.getCenterView().repaint();
 				}
-
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
+			}
+			if (Korisnik.getInstance().getTrenutnaTabela().equals("osoblje")) {
 				int column = 0;
 				int row = centerView.getResultSetTable().getSelectedRow();
 				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
 
-				int confirm = JOptionPane.showConfirmDialog(centerView,
-						"Da li ste sigurni da zelite da izbrisete rezervaciju?");
-				if (confirm == JOptionPane.YES_OPTION) {
-					ProcedureClass.procedura2("{ call IzbrisiRezervaciju(?)}", Integer.valueOf(value));
+				int i = 0;
+				int result = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da obrisete korisnika?");
+				if (result == JOptionPane.YES_OPTION) {
+
+					String procedura = "{call OBRISI_RADNIKA(?)}";
+					ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value));
 
 					view.getCenterView().newModel.removeRow(row);
 					view.getCenterView().revalidate();
 					view.getCenterView().repaint();
 				}
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("kupci")) {
+				int column = 0;
+				int row = centerView.getResultSetTable().getSelectedRow();
+				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
 
-			} else
-				JOptionPane.showMessageDialog(centerView, "Nemate pravo pristupa ovom dijelu sistema!!!");
+				int confirm = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da izbrisete kupca?");
+				if (confirm == JOptionPane.YES_OPTION) {
+
+					ProcedureClass.procedura2("{ call OBRISI_KUPCA(?)}", Integer.valueOf(value));
+					view.getCenterView().newModel.removeRow(row);
+					view.getCenterView().revalidate();
+					view.getCenterView().repaint();
+
+				}
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("proizvodi")) {
+				int column = 0;
+				int row = centerView.getResultSetTable().getSelectedRow();
+				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
+
+				int confirm = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da izbrisete proizvod?");
+				if (confirm == JOptionPane.YES_OPTION) {
+
+					ProcedureClass.procedura2("{ call OBRISI_PROIZVOD(?)}", Integer.valueOf(value));
+					view.getCenterView().newModel.removeRow(row);
+					view.getCenterView().revalidate();
+					view.getCenterView().repaint();
+
+				}
+
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("stavke")) {
+				int column = 0;
+				int row = centerView.getResultSetTable().getSelectedRow();
+				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
+
+				int confirm = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da izbrisete stavku?");
+				if (confirm == JOptionPane.YES_OPTION) {
+
+					ProcedureClass.procedura2("{ call OBRISI_STAVKE_NARUDZBE(?)}", Integer.valueOf(value));
+					view.getCenterView().newModel.removeRow(row);
+					view.getCenterView().revalidate();
+					view.getCenterView().repaint();
+
+				}
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
+				int column = 0;
+				int row = centerView.getResultSetTable().getSelectedRow();
+				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
+
+				int confirm = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da izbrisete mjesto?");
+				if (confirm == JOptionPane.YES_OPTION) {
+
+					ProcedureClass.procedura2("{ call OBRISI_MJESTO(?)}", Integer.valueOf(value));
+					view.getCenterView().newModel.removeRow(row);
+					view.getCenterView().revalidate();
+					view.getCenterView().repaint();
+
+				}
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
+				int column = 0;
+				int row = centerView.getResultSetTable().getSelectedRow();
+				String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
+
+				int confirm = JOptionPane.showConfirmDialog(centerView,
+						"Da li ste sigurni da zelite da izbrisete mjesto?");
+				if (confirm == JOptionPane.YES_OPTION) {
+
+					ProcedureClass.procedura2("{ call OBRISI_TIP_PLACANJA(?)}", Integer.valueOf(value));
+					view.getCenterView().newModel.removeRow(row);
+					view.getCenterView().revalidate();
+					view.getCenterView().repaint();
+
+				}
+			}
 		} else if (e.getActionCommand().equals("next")) {
 			int row = centerView.getResultSetTable().getSelectedRow();
 			int rows = centerView.getResultSetTable().getRowCount() - 1;
@@ -162,13 +214,10 @@ public class ToolbarControler implements ActionListener {
 			int row = centerView.getResultSetTable().getSelectedRow();
 			String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
 
-			if (Korisnik.getInstance().getTrenutnaTabela().equals("poslovniSistem")) {
-				// dodavanje.dodajPoslovniSistem();
-				// dodavanje.podesiVrijednostiPoslovnogSistema(Integer.valueOf(value));
+			if (Korisnik.getInstance().getTrenutnaTabela().equals("narudzbe")) {
 				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("smjestajneJednice")) {
-				// dodavanje.dodavanjeSmjestajneJedinice();
-				// dodavanje.podesiVrijednostiSmjestajneJedinice(Integer.valueOf(value));
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
+				dodavanje.dodavanjeMjesta();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")) {
 				// dodavanje.dodavanjeZaposlenog();
@@ -177,9 +226,7 @@ public class ToolbarControler implements ActionListener {
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
 				JOptionPane.showMessageDialog(centerView, "Ne postoji mogucnost editovanja rezervacije!!!");
 			}
-		} else
-			JOptionPane.showMessageDialog(centerView, "Nemate pravo pristupa ovom dijelu sistema!!!");
-
+		}
 	}
 
 	public ArrayList<Integer> vratiRezSmjestajneJedinice(int rez) {

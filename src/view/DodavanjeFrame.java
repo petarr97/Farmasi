@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -17,14 +18,18 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import com.mindfusion.common.Convert;
 
 import Procedure.ProcedureClass;
 import model.Element;
@@ -39,12 +44,22 @@ public class DodavanjeFrame extends JFrame {
 	public ArrayList<Element> radnici = new ArrayList<Element>();
 	public ArrayList<Element> kupci = new ArrayList<Element>();
 	public ArrayList<Element> gradovi = new ArrayList<Element>();
+	public ArrayList<Element> narudzbe = new ArrayList<Element>();
+	public ArrayList<Element> proizvodi = new ArrayList<Element>();
 
+	public JTextField ime = null;
+	public JTextField prezime = null;
+	public JTextField datumRodjenja = null;
+	public JTextField datumZaposlenja = null;
+
+	public JComboBox<String> proizvodiCb = null;
+	public JComboBox<String> narduzbeCb = null;
+	public JComboBox<String> gradoviCb = null;
 	public JComboBox<String> tipPlacanjaCb = null;
 	public JComboBox<String> kupciCb = null;
 	public JTextField cijena = null;
 	public JComboBox<String> radniciCb = null;
-	public JTextField brojSJ = null;
+	public JTextField broj = null;
 	public JTextArea napomena = null;
 	public JTextField status = null;
 	public JTextField datum = null;
@@ -71,7 +86,6 @@ public class DodavanjeFrame extends JFrame {
 	String mode = "";
 	int editId;
 
-	private int defautBr;
 	private String defaultUsername;
 
 	public DodavanjeFrame() {
@@ -103,26 +117,6 @@ public class DodavanjeFrame extends JFrame {
 		panel.setLocation(new Point(0, 0));
 		panel.setSize(new Dimension(600, 600));
 		panel.setBackground(Color.decode("#98B4D4"));
-
-		JButton closeButton = new JButton("X");
-		closeButton.setFont(new Font("Calibri", Font.BOLD, 20));
-		closeButton.setSize(new Dimension(50, 50));
-		closeButton.setLocation(new Point(530, 0));
-		closeButton.setOpaque(false);
-		closeButton.setContentAreaFilled(false);
-		closeButton.setBorderPainted(false);
-		closeButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// data.clear();
-				// tip.clear();
-				dispose();
-			}
-		});
-		panel.add(closeButton);
-
-		// add(panel);
 
 	}
 
@@ -192,53 +186,7 @@ public class DodavanjeFrame extends JFrame {
 		datum.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		datum.setLocation(new Point(100, 350));
 		panel.add(datum);
-//
-//		JLabel tipLbl = new JLabel("Izaberite tip smjestajne jedinice");
-//		tipLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
-//		tipLbl.setLocation(new Point(100, 200));
-//		tipLbl.setSize(new Dimension(700, 30));
-//
-//		i = 0;
-//		for (Element el : tip) {
-//			tipJedinice[i++] = el.naziv;
-//		}
-//
-//		tipSmjestajneJediniceCb = new JComboBox<String>(tipJedinice);
-//		tipSmjestajneJediniceCb.setSelectedIndex(0);
-//		tipSmjestajneJediniceCb.setSize(new Dimension(150, 20));
-//		tipSmjestajneJediniceCb.setLocation(new Point(100, 230));
-//
-//		JLabel brojlbl = new JLabel("Unesite broj smjestajne jedinice");
-//		brojlbl.setFont(new Font("Calibri", Font.PLAIN, 20));
-//		brojlbl.setLocation(new Point(100, 260));
-//		brojlbl.setSize(new Dimension(700, 30));
-//
-//		brojSJ = new JTextField();
-//		brojSJ.setSize(new Dimension(200, 30));
-//		brojSJ.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-//		brojSJ.setLocation(new Point(100, 290));
-//		brojSJ.addKeyListener(new KeyAdapter() {
-//			@Override
-//			public void keyTyped(KeyEvent e) {
-//				char c = e.getKeyChar();
-//				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
-//					getToolkit().beep();
-//					e.consume();
-//				}
-//			}
-//		});
-//
-//		JLabel napomenaLbl = new JLabel("Unesite napomenu");
-//		napomenaLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
-//		napomenaLbl.setLocation(new Point(100, 330));
-//		napomenaLbl.setSize(new Dimension(700, 30));
-//
-//		napomena = new JTextArea();
-//		napomena.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
-//		napomena.setSize(new Dimension(200, 70));
-//		napomena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-//		napomena.setLocation(new Point(100, 360));
-//
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setAlignmentX(CENTER_ALIGNMENT);
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
@@ -250,20 +198,11 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				insertNarudzba();
+				dispose();
 			}
 		});
 		panel.add(confirmButton);
 
-		// panel.add(confirmButton);
-		// panel.add(napomenaLbl);
-		// panel.add(napomena);
-		// panel.add(brojSJ);
-		// panel.add(brojlbl);
-		// panel.add(tipLbl);
-		// panel.add(tipSmjestajneJediniceCb);
-		// panel.add(cijenaLbL);
-		// panel.add(cijena);
-		// panel.add(poslovniSistemi);
 	}
 
 	// popunjavanje modela za tip placanja combo box
@@ -335,6 +274,29 @@ public class DodavanjeFrame extends JFrame {
 		return tipNiz;
 	}
 
+	// popunjavanje modela za mjesta combo box
+	public String[] getMjesta() {
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_MJESTO }");
+		ArrayList<String> mjesto = new ArrayList<String>();
+		try {
+			int i = 0;
+			while (rs.next()) {
+				String ime = (i++) + rs.getString(2);
+				this.gradovi.add(new Element(rs.getString(2), rs.getInt(1)));
+				mjesto.add(ime);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String[] tipNiz = new String[mjesto.size()];
+		int i = 0;
+		for (String string : mjesto) {
+			tipNiz[i++] = string;
+		}
+		return tipNiz;
+	}
+
 	// ubacivanje narudzbe u bazu
 
 	public void insertNarudzba() {
@@ -346,4 +308,444 @@ public class DodavanjeFrame extends JFrame {
 				tipPlacanja.get(tipPlacanjaCb.getSelectedIndex()).id, radnici.get(radniciCb.getSelectedIndex()).id,
 				kupci.get(kupciCb.getSelectedIndex()).getId(), sqlDate, status.getText(), 0, 0, 0);
 	}
+
+	// kreiranje prozora za dodavanje radnika
+	public void dodavanjeRadnika() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JLabel lbl = new JLabel("Mjesto");
+		lbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(lbl);
+
+		String[] mjesto = getMjesta();
+		gradoviCb = new JComboBox<String>(mjesto);
+		gradoviCb.setSelectedIndex(0);
+		panel.add(gradoviCb);
+
+		JLabel l = new JLabel("Ime");
+		l.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l);
+
+		ime = new JTextField();
+		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		ime.setPreferredSize(new Dimension(0, 30));
+		panel.add(ime);
+
+		JLabel l1 = new JLabel("Prezime");
+		l1.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l1);
+
+		prezime = new JTextField();
+		prezime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		prezime.setPreferredSize(new Dimension(0, 30));
+		panel.add(prezime);
+
+		JLabel brlbl = new JLabel("Br telefona");
+		brlbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(brlbl);
+
+		broj = new JTextField();
+		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		broj.setPreferredSize(new Dimension(0, 30));
+		panel.add(broj);
+
+		JLabel emailLbl = new JLabel("Email");
+		emailLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(emailLbl);
+
+		email = new JTextField();
+		email.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		email.setPreferredSize(new Dimension(0, 30));
+		panel.add(email);
+
+		JLabel adresalLbl = new JLabel("Adresa");
+		adresalLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(adresalLbl);
+
+		adresa = new JTextField();
+		adresa.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		adresa.setPreferredSize(new Dimension(0, 30));
+		panel.add(adresa);
+
+		JLabel datumLbl = new JLabel("Datum rodjenja");
+		datumLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(datumLbl);
+
+		datumRodjenja = new JTextField();
+		datumRodjenja.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(datumRodjenja);
+
+		JLabel datumLbl1 = new JLabel("Datum zaposlenja");
+		datumLbl1.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(datumLbl1);
+
+		datumZaposlenja = new JTextField();
+		datumZaposlenja.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(datumZaposlenja);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertOsoblje();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertOsoblje() {
+		long date = new java.util.Date().getTime();
+		java.sql.Date sqlDate = new java.sql.Date(date);
+
+		ProcedureClass.procedura2("{ call INSERT_RADNIK(?,?,?,?,?,?,?,?)}",
+				gradovi.get(gradoviCb.getSelectedIndex()).id, ime.getText(), prezime.getText(), broj.getText(),
+				email.getText(), adresa.getText(), sqlDate, sqlDate);
+	}
+
+	// kreiranje prozora za dodavanje kupca
+	public void dodavanjeKupca() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JLabel lbl = new JLabel("Mjesto");
+		lbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(lbl);
+
+		String[] mjesto = getMjesta();
+		gradoviCb = new JComboBox<String>(mjesto);
+		gradoviCb.setSelectedIndex(0);
+		panel.add(gradoviCb);
+
+		JLabel l = new JLabel("Ime");
+		l.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l);
+
+		ime = new JTextField();
+		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		ime.setPreferredSize(new Dimension(0, 30));
+		panel.add(ime);
+
+		JLabel l1 = new JLabel("Prezime");
+		l1.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l1);
+
+		prezime = new JTextField();
+		prezime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		prezime.setPreferredSize(new Dimension(0, 30));
+		panel.add(prezime);
+
+		JLabel brlbl = new JLabel("Br telefona");
+		brlbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(brlbl);
+
+		broj = new JTextField();
+		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		broj.setPreferredSize(new Dimension(0, 30));
+		panel.add(broj);
+
+		JLabel adresalLbl = new JLabel("Adresa");
+		adresalLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(adresalLbl);
+
+		adresa = new JTextField();
+		adresa.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		adresa.setPreferredSize(new Dimension(0, 30));
+		panel.add(adresa);
+
+		JLabel JMBlbl = new JLabel("JMB");
+		JMBlbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(JMBlbl);
+
+		maticniBroj = new JTextField();
+		maticniBroj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(maticniBroj);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertKupac();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertKupac() {
+		long date = new java.util.Date().getTime();
+		java.sql.Date sqlDate = new java.sql.Date(date);
+
+		ProcedureClass.procedura2("{ call INSERT_KUPAC(?,?,?,?,?,?)}", gradovi.get(gradoviCb.getSelectedIndex()).id,
+				ime.getText(), prezime.getText(), adresa.getText(), maticniBroj.getText(), broj.getText());
+	}
+
+	// kreiranje prozora za dodavanje mjesta
+	public void dodavanjeMjesta() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		setSize(new Dimension(300, 250));
+		JLabel lbl = new JLabel("Naziv Mjesta");
+		lbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(lbl);
+
+		ime = new JTextField();
+		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(ime);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertMjesto();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertMjesto() {
+
+		ProcedureClass.procedura2("{ call INSERT_MJESTO(?)}", ime.getText());
+	}
+
+	// kreiranje prozora za dodavanje prozivoda
+	public void dodavanjeProizvoda() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		setSize(new Dimension(300, 300));
+		JLabel l = new JLabel("Naziv");
+		l.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l);
+
+		ime = new JTextField();
+		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		ime.setPreferredSize(new Dimension(0, 30));
+		panel.add(ime);
+
+		JLabel l1 = new JLabel("Cijena");
+		l1.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l1);
+
+		cijena = new JTextField();
+		cijena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		cijena.setPreferredSize(new Dimension(0, 30));
+		panel.add(cijena);
+
+		JLabel pdvLbl = new JLabel("PDV stopa");
+		pdvLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(pdvLbl);
+
+		broj = new JTextField();
+		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(broj);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertProizvod();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertProizvod() {
+
+		ProcedureClass.procedura2("{ call INSERT_PROIZVOD(?,?,?)}", ime.getText(), Convert.toDouble(cijena.getText()),
+				Convert.toDouble(broj.getText()));
+	}
+
+	// kreiranje prozora za dodavanje tipa placanja
+	public void dodavanjeTipaPlacanja() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		setSize(new Dimension(300, 250));
+		JLabel lbl = new JLabel("Tip placanja");
+		lbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(lbl);
+
+		ime = new JTextField();
+		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(ime);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertTipPlacanja();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertTipPlacanja() {
+
+		ProcedureClass.procedura2("{ call INSERT_TIPPLACANJA(?)}", ime.getText());
+	}
+
+	// kreiranje prozora za dodavanje kupca
+	public void dodavanjeStavkeNarudzbe() {
+		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JLabel lbl = new JLabel("Narudzba ID");
+		lbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(lbl);
+
+		String[] narduzbe = getNarudzbe();
+		narduzbeCb = new JComboBox<String>(narduzbe);
+		narduzbeCb.setSelectedIndex(0);
+		panel.add(narduzbeCb);
+
+		JLabel prLbl = new JLabel("Proizvodi ID");
+		prLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(prLbl);
+
+		String[] proizvodi = getProizvodi();
+		proizvodiCb = new JComboBox<String>(proizvodi);
+		proizvodiCb.setSelectedIndex(0);
+		panel.add(proizvodiCb);
+
+		JLabel l = new JLabel("Kolicina");
+		l.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(l);
+
+		broj = new JTextField();
+		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		broj.setPreferredSize(new Dimension(0, 30));
+		panel.add(broj);
+
+		JLabel cjLbl = new JLabel("Cijena");
+		cjLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
+		panel.add(cjLbl);
+
+		cijena = new JTextField();
+		cijena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		panel.add(cijena);
+
+		confirmButton = new JButton("POTVRDI");
+		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
+		confirmButton.setUI(new StyledButtonUI());
+		confirmButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertNoveStavke();
+				dispose();
+			}
+		});
+		panel.add(confirmButton);
+
+		for (Component c : panel.getComponents()) {
+			c.setMaximumSize(new Dimension(200, 30));
+			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}
+
+	}
+
+	// popunjavanje modela narudzbi cb
+	private String[] getNarudzbe() {
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_NARUDZBE }");
+		ArrayList<String> narudzbe = new ArrayList<String>();
+		try {
+			int i = 0;
+			while (rs.next()) {
+				this.narudzbe.add(new Element(null, rs.getInt(1)));
+				narudzbe.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String[] tipNiz = new String[narudzbe.size()];
+		int i = 0;
+		for (String string : narudzbe) {
+			tipNiz[i++] = string;
+		}
+		return tipNiz;
+	}
+
+	// popunjavanje modela proizvoda cb
+	private String[] getProizvodi() {
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_PROIZVODE }");
+		ArrayList<String> pro = new ArrayList<String>();
+		try {
+			int i = 0;
+			while (rs.next()) {
+				this.proizvodi.add(new Element(rs.getString(2), rs.getInt(1)));
+				pro.add(rs.getString(1) + " " + rs.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String[] tipNiz = new String[pro.size()];
+		int i = 0;
+		for (String string : pro) {
+			tipNiz[i++] = string;
+		}
+		return tipNiz;
+	}
+
+	// ubacivanje korisnika u bazu
+	protected void insertNoveStavke() {
+		ProcedureClass.procedura2("{ call INSERT_STAVKENARUDZBE(?,?,?,?)}",
+				narudzbe.get(narduzbeCb.getSelectedIndex()).id, proizvodi.get(proizvodiCb.getSelectedIndex()).id,
+				Convert.toInt16(broj.getText()), Convert.toDouble(cijena.getText()));
+	}
+
 }

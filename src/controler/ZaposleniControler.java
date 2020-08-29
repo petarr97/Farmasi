@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
@@ -16,9 +15,7 @@ import model.TableModel;
 import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
-import view.Brisanje;
 import view.DodavanjeFrame;
-import view.Izmjena;
 import view.TableView;
 
 public class ZaposleniControler implements ActionListener {
@@ -30,7 +27,7 @@ public class ZaposleniControler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		Korisnik.getInstance().setTrenutnaTabela("korisnik");
+		Korisnik.getInstance().setTrenutnaTabela("proizvodi");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 		centerView = view.getCenterView();
 		centerView.removeAll();
@@ -76,32 +73,12 @@ public class ZaposleniControler implements ActionListener {
 			view.getCenterView().removeAll();
 			view.getCenterView().createTable();
 			createModel(data, columnNames);
-			zabrana = false;
-		} else if (e.getActionCommand().equals("brisanje") && Korisnik.getInstance().getBrisanje() == 1) {
-			Brisanje brisanje = new Brisanje();
-			brisanje.brisanjeKorisnika();
-			brisanje.show();
-			view.setState(new ReadyState(view));
-			zabrana = false;
-		} else if (e.getActionCommand().equals("dodavanje") && Korisnik.getInstance().getDodavanje() == 1
-				&& Korisnik.getInstance().getTipKorisnika() == 1) {
+		} else if (e.getActionCommand().equals("dodavanje")) {
 			DodavanjeFrame dodajKorisnik = new DodavanjeFrame();
-			// dodajKorisnik.dodavanjeZaposlenog();
+			dodajKorisnik.dodavanjeProizvoda();
 			dodajKorisnik.show();
 			view.setState(new ReadyState(view));
-			zabrana = false;
-
-		} else if (e.getActionCommand().equals("izmjena") && Korisnik.getInstance().getIzmjena() == 1
-				&& Korisnik.getInstance().getTipKorisnika() == 1) {
-			Izmjena izmjena = new Izmjena(view.getInfoPanel());
-			izmjena.show();
-			view.setState(new ReadyState(view));
-
-			zabrana = false;
 		}
-		if (zabrana)
-			JOptionPane.showMessageDialog(centerView,
-					"Korisnik " + Korisnik.getInstance().username + " nema privilegije za ovaj dio sistema!!!");
 
 	}
 
