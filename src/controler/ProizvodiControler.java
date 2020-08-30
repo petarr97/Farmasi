@@ -18,8 +18,7 @@ import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
 
-public class PoslovniSistemiControler implements ActionListener {
-
+public class ProizvodiControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	boolean zabrana = true;
@@ -27,31 +26,28 @@ public class PoslovniSistemiControler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Korisnik.getInstance().setTrenutnaTabela("narudzbe");
+
+		Korisnik.getInstance().setTrenutnaTabela("proizvodi");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 		centerView = view.getCenterView();
 		centerView.removeAll();
 		centerView.repaint();
 
+		view.setState(new WorkingOnTableState(view));
+
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("prikaz")) {
-			view.setState(new WorkingOnTableState(view));
 
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_NARUDZBE}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_PROIZVODE}");
 
-			columnNames = new String[9];
+			columnNames = new String[4];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Tip placanja";
-			columnNames[2] = "RadnikID";
-			columnNames[3] = "KupacID";
-			columnNames[4] = "Datum";
-			columnNames[5] = "Status";
-			columnNames[6] = "Iznos bez pdv";
-			columnNames[7] = "PDV";
-			columnNames[8] = "Iznos sa PDV";
+			columnNames[1] = "Naziv proizvoda";
+			columnNames[2] = "Cijena";
+			columnNames[3] = "PDV Stopa";
 
 			int br_redova = 0;
 
@@ -65,11 +61,7 @@ public class PoslovniSistemiControler implements ActionListener {
 					pomocna.add(rs.getString(2));
 					pomocna.add(rs.getString(3));
 					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(5));
-					pomocna.add(rs.getString(6));
-					pomocna.add(rs.getString(7));
-					pomocna.add(rs.getString(8));
-					pomocna.add(rs.getString(9));
+
 					data.add(pomocna);
 					// pomocna.clear();
 				}
@@ -81,12 +73,11 @@ public class PoslovniSistemiControler implements ActionListener {
 			view.getCenterView().removeAll();
 			view.getCenterView().createTable();
 			createModel(data, columnNames);
-			zabrana = false;
 		} else if (e.getActionCommand().equals("dodavanje")) {
+			DodavanjeFrame dodajKorisnik = new DodavanjeFrame();
+			dodajKorisnik.dodavanjeProizvoda();
+			dodajKorisnik.show();
 			view.setState(new ReadyState(view));
-			DodavanjeFrame dodavanje = new DodavanjeFrame();
-			dodavanje.dodavanjeNarudzbe();
-			dodavanje.show();
 		}
 
 	}

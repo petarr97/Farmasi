@@ -24,13 +24,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import controler.FinansijeControler;
-import controler.PoslovniSistemiControler;
-import controler.ReportsControler;
-import controler.RezervacijeControler;
-import controler.SmjestajnaJedinicaControler;
+import controler.StavkeControler;
+import controler.NarduzbeControler;
+import controler.MjestoControler;
+import controler.KupciControler;
+import controler.OsobljeControler;
 import controler.TipPlacanjControler;
-import controler.ZaposleniControler;
+import controler.ProizvodiControler;
 import model.TableBrowserModel;
 
 public class TableBrowserView extends JPanel {
@@ -83,10 +83,10 @@ public class TableBrowserView extends JPanel {
 	public JButton[] otvoriRadSaPoslovnimSistemima() {
 		JButton[] buttons = new JButton[2];
 		buttons[0] = new JButton("Prikaz svih narudzbi");
-		buttons[0].addActionListener(new PoslovniSistemiControler());
+		buttons[0].addActionListener(new NarduzbeControler());
 		buttons[0].setActionCommand("prikaz");
 		buttons[1] = new JButton("Dodavanje nove narudzbe");
-		buttons[1].addActionListener(new PoslovniSistemiControler());
+		buttons[1].addActionListener(new NarduzbeControler());
 		buttons[1].setActionCommand("dodavanje");
 
 		return buttons;
@@ -116,10 +116,10 @@ public class TableBrowserView extends JPanel {
 	public JButton[] otvoriRadSaRadnicima() {
 		JButton[] buttons = new JButton[2];
 		buttons[0] = new JButton("Prikaz osoblja");
-		buttons[0].addActionListener(new SmjestajnaJedinicaControler());
+		buttons[0].addActionListener(new OsobljeControler());
 		buttons[0].setActionCommand("prikaz");
 		buttons[1] = new JButton("Dodavanje osoblja");
-		buttons[1].addActionListener(new SmjestajnaJedinicaControler());
+		buttons[1].addActionListener(new OsobljeControler());
 		buttons[1].setActionCommand("dodavanje");
 
 		return buttons;
@@ -130,11 +130,11 @@ public class TableBrowserView extends JPanel {
 
 		buttons[0] = new JButton("Prikaz kupaca");
 		buttons[0].setActionCommand("prikaz");
-		buttons[0].addActionListener(new RezervacijeControler());
+		buttons[0].addActionListener(new KupciControler());
 
 		buttons[1] = new JButton("Dodavanje kupca");
 		buttons[1].setActionCommand("dodavanje");
-		buttons[1].addActionListener(new RezervacijeControler());
+		buttons[1].addActionListener(new KupciControler());
 
 		return buttons;
 	}
@@ -144,11 +144,11 @@ public class TableBrowserView extends JPanel {
 
 		buttons[0] = new JButton("Prikaz proizvoda");
 		buttons[0].setActionCommand("prikaz");
-		buttons[0].addActionListener(new ZaposleniControler());
+		buttons[0].addActionListener(new ProizvodiControler());
 
 		buttons[1] = new JButton("Dodavanje zaposlenog");
 		buttons[1].setActionCommand("dodavanje");
-		buttons[1].addActionListener(new ZaposleniControler());
+		buttons[1].addActionListener(new ProizvodiControler());
 
 		return buttons;
 	}
@@ -157,10 +157,10 @@ public class TableBrowserView extends JPanel {
 		JButton[] buttons = new JButton[2];
 		buttons[0] = new JButton("Prikaz svih mjesta ");
 		buttons[0].setActionCommand("prikaz");
-		buttons[0].addActionListener(new ReportsControler());
+		buttons[0].addActionListener(new MjestoControler());
 		buttons[1] = new JButton("Dodavanje novog mjesta");
 		buttons[1].setActionCommand("dodavanje");
-		buttons[1].addActionListener(new ReportsControler());
+		buttons[1].addActionListener(new MjestoControler());
 
 		return buttons;
 	}
@@ -169,7 +169,7 @@ public class TableBrowserView extends JPanel {
 		JButton[] buttons = new JButton[2];
 		buttons[0] = new JButton("Prikaz stavki narudzbe");
 		buttons[0].setActionCommand("finansije");
-		buttons[0].addActionListener(new FinansijeControler());
+		buttons[0].addActionListener(new StavkeControler());
 		buttons[1] = new JButton("Dodavanje Stavki narduzbe");
 		buttons[1].setActionCommand("rezervacije");
 		buttons[1].addActionListener(new ActionListener() {

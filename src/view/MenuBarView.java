@@ -14,7 +14,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import controler.ReportsControler;
 import controler.ToolbarControler;
 
 public class MenuBarView extends JMenuBar {
@@ -36,39 +35,13 @@ public class MenuBarView extends JMenuBar {
 	}
 
 	public JMenu[] postavi_MenuBar() {
-		JMenu[] menuBarStavke = new JMenu[2];
+		JMenu[] menuBarStavke = new JMenu[1];
 
 		menuBarStavke[0] = new JMenu("Navigacija");
 		menuBarStavke[0].setMnemonic(KeyEvent.VK_E);
 		postaviView(menuBarStavke[0]);
 
-		menuBarStavke[1] = new JMenu("Izvjestaji");
-		menuBarStavke[1].setMnemonic(KeyEvent.VK_V);
-		postaviReports(menuBarStavke[1]);
-
 		return menuBarStavke;
-	}
-
-	public void postaviReports(JMenu Reports) {
-		JMenuItem finansije = new JMenuItem();
-		finansije.setText("Finansije");
-		finansije.setActionCommand("finansije");
-		finansije.addActionListener(new ReportsControler());
-
-		JMenuItem rezervacije = new JMenuItem();
-		rezervacije.setText("Rezervacije");
-		rezervacije.setActionCommand("rezervacije");
-		rezervacije.addActionListener(new ReportsControler());
-
-		JMenuItem sistemi = new JMenuItem();
-		sistemi.setText("Poslovni sistemi");
-		sistemi.setActionCommand("poslovni_sistemi");
-		sistemi.addActionListener(new ReportsControler());
-
-		Reports.add(finansije);
-		Reports.add(rezervacije);
-		Reports.add(sistemi);
-
 	}
 
 	public void postaviView(JMenu Navigacija) {

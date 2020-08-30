@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
@@ -16,44 +15,50 @@ import model.TableModel;
 import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
-import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
+import view.ToolbarView;
 
-public class SmjestajnaJedinicaControler implements ActionListener {
+public class NarduzbeControler implements ActionListener {
+
 	ApplicationView view = null;
 	TableView centerView = null;
-	public boolean zabrana = true;
+	boolean zabrana = true;
 	TableModel tableModel = null;
+	ToolbarView toolbar = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		Korisnik.getInstance().setTrenutnaTabela("osoblje");
+		Korisnik.getInstance().setTrenutnaTabela("narudzbe");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		toolbar = view.getToolbarView();
+		toolbar.postaviFilterZaNarudzbe();
+		toolbar.repaint();
+		toolbar.revalidate();
 
 		centerView = view.getCenterView();
 		centerView.removeAll();
 		centerView.repaint();
-		view.setState(new WorkingOnTableState(view));
 
+		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("prikaz")) {
+			view.setState(new WorkingOnTableState(view));
 
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_RADNIKE}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_NARUDZBE}");
 
 			columnNames = new String[9];
 			columnNames[0] = "#ID";
-			columnNames[1] = "Mjesto ID";
-			columnNames[2] = "Ime";
-			columnNames[3] = "Prezime";
-			columnNames[4] = "Br. telefona";
-			columnNames[5] = "Email";
-			columnNames[6] = "Adresa";
-			columnNames[7] = "Datum rodjenja";
-			columnNames[8] = "Datum zaposlenja";
+			columnNames[1] = "Tip placanja";
+			columnNames[2] = "RadnikID";
+			columnNames[3] = "KupacID";
+			columnNames[4] = "Datum";
+			columnNames[5] = "Status";
+			columnNames[6] = "Iznos bez pdv";
+			columnNames[7] = "PDV";
+			columnNames[8] = "Iznos sa PDV";
 
 			int br_redova = 0;
 
@@ -62,6 +67,7 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 				int i = 0;
 				while (rs.next()) {
 					ArrayList<String> pomocna = new ArrayList<String>();
+
 					pomocna.add(rs.getString(1));
 					pomocna.add(rs.getString(2));
 					pomocna.add(rs.getString(3));
@@ -78,32 +84,18 @@ public class SmjestajnaJedinicaControler implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			centerView.removeAll();
-			centerView.createTable();
-			view.getTableBrowserView().postaviFilterZaRadnike();
+
+			view.getCenterView().removeAll();
+			view.getCenterView().createTable();
 			createModel(data, columnNames);
 			zabrana = false;
-
 		} else if (e.getActionCommand().equals("dodavanje")) {
-
-			DodavanjeFrame dSj = new DodavanjeFrame();
-			dSj.dodavanjeRadnika();
-			dSj.show();
-			centerView.removeAll();
 			view.setState(new ReadyState(view));
-			zabrana = false;
-		} else if (e.getActionCommand().equals("brisanje")) {
-
-			Brisanje brisanje = new Brisanje();
-			brisanje.brisanjeSmjestajneJedinice();
-			brisanje.show();
-			centerView.removeAll();
-			view.setState(new ReadyState(view));
-			zabrana = false;
+			DodavanjeFrame dodavanje = new DodavanjeFrame();
+			dodavanje.dodavanjeNarudzbe();
+			dodavanje.show();
 		}
-		if (zabrana)
-			JOptionPane.showMessageDialog(centerView,
-					"Korisniku " + Korisnik.getInstance().username + " nema privilegije za ovaj dio sistema!!!");
+
 	}
 
 	public void createModel(ArrayList<ArrayList<String>> data, String[] columns) {

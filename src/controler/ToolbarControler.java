@@ -208,7 +208,7 @@ public class ToolbarControler implements ActionListener {
 
 			row = centerView.getResultSetTable().getSelectedRow();
 			view.getInfoPanel().rows.setText("Selektovani red: " + (row + 1) + "/" + (lastRow + 1));
-		} else if (e.getActionCommand().contentEquals("editRow") && Korisnik.getInstance().getIzmjena() == 1) {
+		} else if (e.getActionCommand().contentEquals("editRow")) {
 
 			int column = 0;
 			int row = centerView.getResultSetTable().getSelectedRow();
@@ -218,14 +218,43 @@ public class ToolbarControler implements ActionListener {
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
 				dodavanje.dodavanjeMjesta();
+				dodavanje.podesiDodavanjeMjesta(value, centerView, row);
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")) {
 				// dodavanje.dodavanjeZaposlenog();
 				// dodavanje.podesiVrijednostiKorisnika(Integer.valueOf(value));
 				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("rezervacije")) {
-				JOptionPane.showMessageDialog(centerView, "Ne postoji mogucnost editovanja rezervacije!!!");
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
+				dodavanje.dodavanjeTipaPlacanja();
+				dodavanje.podesiTipPlacanja(value, centerView, row);
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("proizvodi")) {
+				dodavanje.dodavanjeProizvoda();
+				dodavanje.podesiProizvod(value, centerView, row);
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("stavke")) {
+				dodavanje.dodavanjeStavkeNarudzbe();
+				dodavanje.podesiStavke(value, centerView, row);
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("kupci")) {
+				dodavanje.dodavanjeKupca();
+				dodavanje.podesiKupca(value, centerView, row);
+				dodavanje.show();
+			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("osoblje")) {
+				dodavanje.dodavanjeRadnika();
+				dodavanje.podesiOsoblje(value, centerView, row);
+				dodavanje.show();
 			}
+		} else if (e.getActionCommand().equals("filterNarudzbeIme")) {
+			String status = view.getToolbarView().filter.getText();
+			System.out.println(status);
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 5))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
 		}
 	}
 

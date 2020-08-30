@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import controler.ToolbarControler;
 
@@ -25,6 +26,9 @@ public class ToolbarView extends JPanel {
 	JButton delete = null;
 	JButton prev = null;
 	JButton next = null;
+	public JTextField filter = null;
+	JButton confirm = null;
+	public String filterText = "";
 
 	public ToolbarView() {
 		setLayout(null);
@@ -99,6 +103,21 @@ public class ToolbarView extends JPanel {
 			if (component instanceof JButton)
 				((JButton) component).addActionListener(new ToolbarControler(this));
 		}
+	}
+
+	public void postaviFilterZaNarudzbe() {
+		filter = new JTextField();
+		filter.setBorder(BorderFactory.createEmptyBorder());
+		filter.setLocation(450, 0);
+		filter.setSize(new Dimension(80, 35));
+		add(filter);
+
+		confirm = new JButton();
+		confirm.setLocation(550, 0);
+		confirm.addActionListener(new ToolbarControler(this));
+		confirm.setActionCommand("filterNarudzbeIme");
+		confirm.setSize(new Dimension(35, 35));
+		add(confirm);
 	}
 
 }

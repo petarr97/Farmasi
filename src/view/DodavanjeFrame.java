@@ -22,11 +22,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.mindfusion.common.Convert;
@@ -37,9 +35,9 @@ import model.Element;
 public class DodavanjeFrame extends JFrame {
 
 	public JPanel panel = null;
+	public TableView table = null;
+	public int row;
 
-	public static String[] listaPoslovnihSistema = null;
-	public static ArrayList<Element> data = new ArrayList<Element>();
 	public ArrayList<Element> tipPlacanja = new ArrayList<Element>();
 	public ArrayList<Element> radnici = new ArrayList<Element>();
 	public ArrayList<Element> kupci = new ArrayList<Element>();
@@ -57,32 +55,19 @@ public class DodavanjeFrame extends JFrame {
 	public JComboBox<String> gradoviCb = null;
 	public JComboBox<String> tipPlacanjaCb = null;
 	public JComboBox<String> kupciCb = null;
-	public JTextField cijena = null;
 	public JComboBox<String> radniciCb = null;
+
+	public JTextField cijena = null;
 	public JTextField broj = null;
-	public JTextArea napomena = null;
 	public JTextField status = null;
 	public JTextField datum = null;
 	public JTextField imeOca = null;
 	public JTextField maticniBroj = null;
-	public JComboBox<String> pol = null;
-	public JTextField password = null;
-	public JTextField username = null;
-	public JTextField fiksni = null;
-	public JTextField mobilni = null;
 	public JTextField email = null;
 	public JTextField www = null;
 	public JTextField adresa = null;
-	public JComboBox<String> smjestajneJediniceCB = null;
-	public ArrayList<Element> smjestajneJediniceLista = new ArrayList<Element>();
-	public JFormattedTextField datumOd = null;
-	public JFormattedTextField datumDo = null;
-	JButton confirmButton = null;
-	JTextField regBr = null;
-	JTextField pib = null;
-	JComboBox<String> drzaveComboBox = null;
-	JComboBox<String> gradoviComboBox = null;
 
+	JButton confirmButton = null;
 	String mode = "";
 	int editId;
 
@@ -279,9 +264,9 @@ public class DodavanjeFrame extends JFrame {
 		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_MJESTO }");
 		ArrayList<String> mjesto = new ArrayList<String>();
 		try {
-			int i = 0;
+			int i = 1;
 			while (rs.next()) {
-				String ime = (i++) + rs.getString(2);
+				String ime = (i++) + " " + rs.getString(2);
 				this.gradovi.add(new Element(rs.getString(2), rs.getInt(1)));
 				mjesto.add(ime);
 			}
@@ -390,7 +375,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertOsoblje();
+				if (mode.equals("edit"))
+					updateOsoblje();
+				else
+					insertOsoblje();
 				dispose();
 			}
 		});
@@ -478,7 +466,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertKupac();
+				if (mode.equals("edit"))
+					updateKupca();
+				else
+					insertKupac();
 				dispose();
 			}
 		});
@@ -520,7 +511,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertMjesto();
+				if (mode.equals("edit"))
+					updateMjesto();
+				else
+					insertMjesto();
 				dispose();
 			}
 		});
@@ -577,7 +571,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertProizvod();
+				if (mode.equals("edit"))
+					updateProizvod();
+				else
+					insertProizvod();
 				dispose();
 			}
 		});
@@ -617,7 +614,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertTipPlacanja();
+				if (mode.equals("edit"))
+					updateTipPlacanja();
+				else
+					insertTipPlacanja();
 				dispose();
 			}
 		});
@@ -683,7 +683,10 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertNoveStavke();
+				if (mode.equals("edit"))
+					updateStavke();
+				else
+					insertNoveStavke();
 				dispose();
 			}
 		});
@@ -746,6 +749,219 @@ public class DodavanjeFrame extends JFrame {
 		ProcedureClass.procedura2("{ call INSERT_STAVKENARUDZBE(?,?,?,?)}",
 				narudzbe.get(narduzbeCb.getSelectedIndex()).id, proizvodi.get(proizvodiCb.getSelectedIndex()).id,
 				Convert.toInt16(broj.getText()), Convert.toDouble(cijena.getText()));
+	}
+
+	// podesavanje edit za mjesto
+	public void podesiDodavanjeMjesta(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.editId = Integer.valueOf(value);
+		this.table = table;
+		this.row = row;
+
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_MJESTA_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.ime.setText(rs.getString(2));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// update mjesto
+	public void updateMjesto() {
+		ProcedureClass.procedura2("{call IZMIJENI_MJESTO(?,?)}", this.editId, this.ime.getText());
+		this.table.newModel.setValueAt(this.ime.getText(), row, 1);
+	}
+
+	// podesavanje edit za tip placanja
+	public void podesiTipPlacanja(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_TIP_PLACANJA_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.ime.setText(rs.getString(2));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// update tip placanja
+	public void updateTipPlacanja() {
+		ProcedureClass.procedura2("{call IZMIJENI_TIP_PLACANJA(?,?)}", this.editId, this.ime.getText());
+		this.table.newModel.setValueAt(this.ime.getText(), row, 1);
+
+	}
+
+	// podesavanje edit za proizvod
+	public void podesiProizvod(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_PROIZVOD_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.ime.setText(rs.getString(2));
+					this.cijena.setText(rs.getString(3));
+					this.broj.setText(rs.getString(4));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// update proizvod
+	public void updateProizvod() {
+		ProcedureClass.procedura2("{call IZMIJENI_PROIZVOD(?,?,?,?)}", this.editId, this.ime.getText(),
+				Double.valueOf(cijena.getText()), Double.valueOf(broj.getText()));
+		this.table.newModel.setValueAt(this.ime.getText(), row, 1);
+		this.table.newModel.setValueAt(this.cijena.getText(), row, 2);
+		this.table.newModel.setValueAt(this.broj.getText(), row, 3);
+
+	}
+
+	// podesavanje edit za stavke
+	public void podesiStavke(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_STAVKE_NARUDZBE_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.broj.setText(rs.getString(4));
+					this.cijena.setText(rs.getString(5));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.narduzbeCb.disable();
+		this.proizvodiCb.disable();
+
+	}
+
+	// update stavke
+	public void updateStavke() {
+		ProcedureClass.procedura2("{call IZMIJENI_STAVKE_NARUDZBE(?,?,?)}", this.editId,
+				Integer.valueOf(this.broj.getText()), Double.valueOf(cijena.getText()));
+		this.table.newModel.setValueAt(this.broj.getText(), row, 3);
+		this.table.newModel.setValueAt(this.cijena.getText(), row, 4);
+
+	}
+
+	// podesavanje edit za kupca
+	public void podesiKupca(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_KUPCA_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.ime.setText(rs.getString(3));
+					this.prezime.setText(rs.getString(4));
+					this.adresa.setText(rs.getString(5));
+					this.maticniBroj.setText(rs.getString(6));
+					this.broj.setText(rs.getString(7));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// update kupca
+	public void updateKupca() {
+		ProcedureClass.procedura2("{call IZMIJENI_KUPCA(?,?,?,?,?,?,?)}", this.editId,
+				gradovi.get(gradoviCb.getSelectedIndex()).id, ime.getText(), prezime.getText(), adresa.getText(),
+				maticniBroj.getText(), broj.getText());
+		this.table.newModel.setValueAt(gradovi.get(gradoviCb.getSelectedIndex()).id, row, 1);
+		this.table.newModel.setValueAt(this.ime.getText(), row, 2);
+		this.table.newModel.setValueAt(this.prezime.getText(), row, 3);
+		this.table.newModel.setValueAt(this.adresa.getText(), row, 4);
+		this.table.newModel.setValueAt(this.maticniBroj.getText(), row, 5);
+		this.table.newModel.setValueAt(this.broj.getText(), row, 6);
+
+	}
+
+	// podesavanje edit za osoblje
+	public void podesiOsoblje(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_RADNIKA_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.ime.setText(rs.getString(3));
+					this.prezime.setText(rs.getString(4));
+					this.broj.setText(rs.getString(5));
+					this.email.setText(rs.getString(6));
+					this.adresa.setText(rs.getString(7));
+					this.datumRodjenja.setText(rs.getString(8));
+					this.datumZaposlenja.setText(rs.getString(9));
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// update kupca
+	public void updateOsoblje() {
+		long date = new java.util.Date().getTime();
+		java.sql.Date sqlDate = new java.sql.Date(date);
+
+		ProcedureClass.procedura2("{call IZMIJENI_RADNIKA(?,?,?,?,?,?,?,?,?)}", this.editId,
+				gradovi.get(gradoviCb.getSelectedIndex()).id, ime.getText(), prezime.getText(), broj.getText(),
+				email.getText(), adresa.getText(), sqlDate, sqlDate);
+		this.table.newModel.setValueAt(gradovi.get(gradoviCb.getSelectedIndex()).id, row, 1);
+		this.table.newModel.setValueAt(this.ime.getText(), row, 2);
+		this.table.newModel.setValueAt(this.prezime.getText(), row, 3);
+		this.table.newModel.setValueAt(this.broj.getText(), row, 4);
+		this.table.newModel.setValueAt(this.email.getText(), row, 5);
+		this.table.newModel.setValueAt(this.adresa.getText(), row, 6);
+		this.table.newModel.setValueAt(this.datumRodjenja.getText(), row, 7);
+		this.table.newModel.setValueAt(this.datumZaposlenja.getText(), row, 8);
+
 	}
 
 }

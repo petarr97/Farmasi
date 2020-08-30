@@ -12,16 +12,15 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
-import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
-import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
 
-public class RezervacijeControler implements ActionListener {
+public class MjestoControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
+	boolean zabrana = true;
 	TableModel tableModel = null;
 
 	@Override
@@ -29,27 +28,20 @@ public class RezervacijeControler implements ActionListener {
 
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 		centerView = view.getCenterView();
+		centerView.removeAll();
+		centerView.repaint();
+		view.setState(new WorkingOnTableState(view));
+		Korisnik.getInstance().setTrenutnaTabela("mjesto");
 		if (e.getActionCommand().equals("prikaz")) {
-
-			Korisnik.getInstance().setTrenutnaTabela("kupci");
-
-			centerView.removeAll();
-			centerView.repaint();
-			view.setState(new WorkingOnTableState(view));
 
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
 
-			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_KUPCE}");
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_MJESTO}");
 
-			columnNames = new String[7];
+			columnNames = new String[2];
 			columnNames[0] = "#ID";
-			columnNames[1] = "MjestoID";
-			columnNames[2] = "Ime";
-			columnNames[3] = "Prezime";
-			columnNames[4] = "Adresa";
-			columnNames[5] = "JMB";
-			columnNames[6] = "Broj telefona";
+			columnNames[1] = "Naziv";
 
 			int br_redova = 0;
 
@@ -61,11 +53,6 @@ public class RezervacijeControler implements ActionListener {
 
 					pomocna.add(rs.getString(1));
 					pomocna.add(rs.getString(2));
-					pomocna.add(rs.getString(3));
-					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(5));
-					pomocna.add(rs.getString(6));
-					pomocna.add(rs.getString(7));
 
 					data.add(pomocna);
 					// pomocna.clear();
@@ -74,26 +61,16 @@ public class RezervacijeControler implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			centerView.removeAll();
-			centerView.createTable();
+			view.getCenterView().removeAll();
+			view.getCenterView().createTable();
 			createModel(data, columnNames);
+			zabrana = false;
 		} else if (e.getActionCommand().equals("dodavanje")) {
-			DodavanjeFrame dodavanje = new DodavanjeFrame();
-			dodavanje.dodavanjeKupca();
-			dodavanje.show();
-			centerView.removeAll();
-
-			view.setState(new ReadyState(view));
-
-		} else if (e.getActionCommand().equals("otkazivanje")) {
-			Brisanje brisanje = new Brisanje();
-			brisanje.postaviOtkazivanjeRezervacije();
-			brisanje.show();
-
-			centerView.removeAll();
-			view.setState(new ReadyState(view));
-
+			DodavanjeFrame dm = new DodavanjeFrame();
+			dm.dodavanjeMjesta();
+			dm.show();
 		}
+
 	}
 
 	public void createModel(ArrayList<ArrayList<String>> data, String[] columns) {
@@ -108,5 +85,4 @@ public class RezervacijeControler implements ActionListener {
 		centerView.newModel = new TableModel(data1, columns);
 		centerView.update();
 	}
-
 }

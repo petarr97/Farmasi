@@ -12,10 +12,11 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
+import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.TableView;
 
-public class FinansijeControler implements ActionListener {
+public class StavkeControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	TableModel tableModel = null;
@@ -27,6 +28,7 @@ public class FinansijeControler implements ActionListener {
 		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 		ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		view.setState(new WorkingOnTableState(view));
 
 		centerView = view.getCenterView();
 		centerView.removeAll();
