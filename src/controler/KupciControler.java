@@ -16,7 +16,6 @@ import model.TableModel;
 import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
-import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
 import view.ToolbarView;
@@ -98,14 +97,6 @@ public class KupciControler implements ActionListener {
 			dodavanje.show();
 			centerView.removeAll();
 
-			view.setState(new ReadyState(view));
-
-		} else if (e.getActionCommand().equals("otkazivanje")) {
-			Brisanje brisanje = new Brisanje();
-			brisanje.postaviOtkazivanjeRezervacije();
-			brisanje.show();
-
-			centerView.removeAll();
 			view.setState(new ReadyState(view));
 
 		}

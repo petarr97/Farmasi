@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import Procedure.ProcedureClass;
@@ -17,7 +16,6 @@ import model.TableModel;
 import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
-import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
 import view.ToolbarView;
@@ -106,19 +104,7 @@ public class OsobljeControler implements ActionListener {
 			dSj.show();
 			centerView.removeAll();
 			view.setState(new ReadyState(view));
-			zabrana = false;
-		} else if (e.getActionCommand().equals("brisanje")) {
-
-			Brisanje brisanje = new Brisanje();
-			brisanje.brisanjeSmjestajneJedinice();
-			brisanje.show();
-			centerView.removeAll();
-			view.setState(new ReadyState(view));
-			zabrana = false;
 		}
-		if (zabrana)
-			JOptionPane.showMessageDialog(centerView,
-					"Korisniku " + Korisnik.getInstance().username + " nema privilegije za ovaj dio sistema!!!");
 	}
 
 	public void createModel(ArrayList<ArrayList<String>> data, String[] columns) {

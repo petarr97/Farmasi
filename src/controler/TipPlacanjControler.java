@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
+import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.DodavanjeFrame;
@@ -28,10 +29,10 @@ public class TipPlacanjControler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+		centerView = view.getCenterView();
 
 		if (e.getActionCommand().equals("prikaz")) {
-
-			view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
 
 			view.remove(view.getToolbarView());
 			view.toolbarView = new ToolbarView();
@@ -42,7 +43,6 @@ public class TipPlacanjControler implements ActionListener {
 			toolbar.postaviFilterTip();
 			toolbar.dodajListenere();
 
-			centerView = view.getCenterView();
 			centerView.removeAll();
 			centerView.repaint();
 			view.setState(new WorkingOnTableState(view));
@@ -77,12 +77,14 @@ public class TipPlacanjControler implements ActionListener {
 				centerView.removeAll();
 				centerView.createTable();
 				createModel(data, columnNames);
-				zabrana = false;
 
 			} else if (e.getActionCommand().equals("dodavanje")) {
 				DodavanjeFrame dF = new DodavanjeFrame();
 				dF.dodavanjeTipaPlacanja();
 				dF.show();
+
+				centerView.removeAll();
+				view.setState(new ReadyState(view));
 			}
 		}
 	}

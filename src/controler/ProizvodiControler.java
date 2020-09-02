@@ -90,6 +90,8 @@ public class ProizvodiControler implements ActionListener {
 			DodavanjeFrame dodajKorisnik = new DodavanjeFrame();
 			dodajKorisnik.dodavanjeProizvoda();
 			dodajKorisnik.show();
+
+			centerView.removeAll();
 			view.setState(new ReadyState(view));
 		}
 

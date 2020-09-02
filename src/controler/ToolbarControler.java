@@ -2,9 +2,6 @@ package controler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -393,18 +390,4 @@ public class ToolbarControler implements ActionListener {
 
 	}
 
-	public ArrayList<Integer> vratiRezSmjestajneJedinice(int rez) {
-		ArrayList<Integer> rezervacijeSj = new ArrayList<Integer>();
-		ResultSet rs = ProcedureClass.getInstance().procedura2("{ call VratiSveRezSmjestajneJedinice(?)}", rez);
-
-		try {
-			while (rs.next()) {
-				rezervacijeSj.add(Integer.valueOf(rs.getString(1)));
-			}
-		} catch (NumberFormatException | SQLException e) {
-			e.printStackTrace();
-		}
-
-		return rezervacijeSj;
-	}
 }

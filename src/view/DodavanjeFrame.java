@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -315,6 +316,17 @@ public class DodavanjeFrame extends JFrame {
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		ime.setPreferredSize(new Dimension(0, 30));
+		ime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(ime);
 
 		JLabel l1 = new JLabel("Prezime");
@@ -324,6 +336,17 @@ public class DodavanjeFrame extends JFrame {
 		prezime = new JTextField();
 		prezime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		prezime.setPreferredSize(new Dimension(0, 30));
+		prezime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(prezime);
 
 		JLabel brlbl = new JLabel("Br telefona");
@@ -333,6 +356,16 @@ public class DodavanjeFrame extends JFrame {
 		broj = new JTextField();
 		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		broj.setPreferredSize(new Dimension(0, 30));
+		broj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(broj);
 
 		JLabel emailLbl = new JLabel("Email");
@@ -392,7 +425,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 		}
 		panel.setSize(new Dimension(450, i * 35));
 		setSize(new Dimension(450, i * 35));
@@ -489,7 +524,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 		}
 		panel.setSize(new Dimension(450, i * 35));
 		setSize(new Dimension(450, i * 35));
@@ -539,7 +576,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 		}
 		panel.setSize(new Dimension(450, i * 35));
 		setSize(new Dimension(450, i * 35));
@@ -603,7 +642,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 		}
 		panel.setSize(new Dimension(450, i * 35));
 		setSize(new Dimension(450, i * 35));
@@ -652,7 +693,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 		}
 		panel.setSize(new Dimension(450, i * 35));
 		setSize(new Dimension(450, i * 35));
@@ -665,7 +708,7 @@ public class DodavanjeFrame extends JFrame {
 		ProcedureClass.procedura2("{ call INSERT_TIPPLACANJA(?)}", ime.getText());
 	}
 
-	// kreiranje prozora za dodavanje kupca
+	// kreiranje prozora za dodavanje nove stavke
 	public void dodavanjeStavkeNarudzbe() {
 		setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -696,14 +739,6 @@ public class DodavanjeFrame extends JFrame {
 		broj.setPreferredSize(new Dimension(0, 30));
 		panel.add(broj);
 
-		JLabel cjLbl = new JLabel("Cijena");
-		cjLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
-		panel.add(cjLbl);
-
-		cijena = new JTextField();
-		cijena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-		panel.add(cijena);
-
 		panel.add(Box.createVerticalStrut(15));
 
 		confirmButton = new JButton("POTVRDI");
@@ -727,6 +762,9 @@ public class DodavanjeFrame extends JFrame {
 			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+			if (c instanceof JLabel) {
+				c.setForeground(Color.white);
+			}
 
 		}
 		panel.setSize(new Dimension(450, i * 35));
@@ -780,9 +818,9 @@ public class DodavanjeFrame extends JFrame {
 
 	// ubacivanje korisnika u bazu
 	protected void insertNoveStavke() {
-		ProcedureClass.procedura2("{ call INSERT_STAVKENARUDZBE(?,?,?,?)}",
+		ProcedureClass.procedura2("{ call INSERT_STAVKENARUDZBE(?,?,?)}",
 				narudzbe.get(narduzbeCb.getSelectedIndex()).id, proizvodi.get(proizvodiCb.getSelectedIndex()).id,
-				Convert.toInt16(broj.getText()), Convert.toDouble(cijena.getText()));
+				Convert.toInt16(broj.getText()));
 	}
 
 	// podesavanje edit za mjesto

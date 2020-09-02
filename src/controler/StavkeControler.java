@@ -13,8 +13,10 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
+import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
+import view.DodavanjeFrame;
 import view.TableView;
 import view.ToolbarView;
 
@@ -26,54 +28,63 @@ public class StavkeControler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		Korisnik.getInstance().setTrenutnaTabela("stavke");
-		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
-		ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
-
-		view.remove(view.getToolbarView());
-		view.toolbarView = new ToolbarView();
-		view.add(view.toolbarView, BorderLayout.NORTH);
-
-		toolbar = view.getToolbarView();
-		toolbar.podesiToolbar();
-		toolbar.psotaviFilterStavke();
-		toolbar.dodajListenere();
-
-		view.setState(new WorkingOnTableState(view));
-
 		centerView = view.getCenterView();
-		centerView.removeAll();
-		centerView.repaint();
 
-		String[] columnNames = new String[5];
-		columnNames[0] = "#ID";
-		columnNames[1] = "Narudzba ID";
-		columnNames[2] = "Proizvod ID";
-		columnNames[3] = "Kolicina";
-		columnNames[4] = "Cijena";
+		if (e.getActionCommand().equals("prikaz")) {
+			Korisnik.getInstance().setTrenutnaTabela("stavke");
+			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+			ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
 
-		try {
-			while (rs.next()) {
-				ArrayList<String> pomocna = new ArrayList<String>();
+			view.remove(view.getToolbarView());
+			view.toolbarView = new ToolbarView();
+			view.add(view.toolbarView, BorderLayout.NORTH);
 
-				pomocna.add(rs.getString(1));
-				pomocna.add(rs.getString(2));
-				pomocna.add(rs.getString(3));
-				pomocna.add(rs.getString(4));
-				pomocna.add(rs.getString(5));
+			toolbar = view.getToolbarView();
+			toolbar.podesiToolbar();
+			toolbar.psotaviFilterStavke();
+			toolbar.dodajListenere();
 
-				data.add(pomocna);
-				// pomocna.clear();
+			view.setState(new WorkingOnTableState(view));
+
+			centerView.removeAll();
+			centerView.repaint();
+
+			String[] columnNames = new String[5];
+			columnNames[0] = "#ID";
+			columnNames[1] = "Narudzba ID";
+			columnNames[2] = "Proizvod ID";
+			columnNames[3] = "Kolicina";
+			columnNames[4] = "Cijena";
+
+			try {
+				while (rs.next()) {
+					ArrayList<String> pomocna = new ArrayList<String>();
+
+					pomocna.add(rs.getString(1));
+					pomocna.add(rs.getString(2));
+					pomocna.add(rs.getString(3));
+					pomocna.add(rs.getString(4));
+					pomocna.add(rs.getString(5));
+
+					data.add(pomocna);
+					// pomocna.clear();
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			centerView.removeAll();
+			centerView.createTable();
+			createModel(data, columnNames);
+		} else if (e.getActionCommand().equals("dodavanje")) {
+			DodavanjeFrame df = new DodavanjeFrame();
+			df.dodavanjeStavkeNarudzbe();
+			df.show();
+
+			centerView.removeAll();
+			view.setState(new ReadyState(view));
 		}
-		centerView.removeAll();
-		centerView.createTable();
-		createModel(data, columnNames);
 	}
 
 	public void createModel(ArrayList<ArrayList<String>> data, String[] columns) {

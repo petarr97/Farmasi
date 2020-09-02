@@ -96,10 +96,12 @@ public class NarduzbeControler implements ActionListener {
 			createModel(data, columnNames);
 			zabrana = false;
 		} else if (e.getActionCommand().equals("dodavanje")) {
-			view.setState(new ReadyState(view));
 			DodavanjeFrame dodavanje = new DodavanjeFrame();
 			dodavanje.dodavanjeNarudzbe();
 			dodavanje.show();
+
+			centerView.removeAll();
+			view.setState(new ReadyState(view));
 		}
 
 	}

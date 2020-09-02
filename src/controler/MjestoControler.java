@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
+import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.DodavanjeFrame;
@@ -82,6 +83,9 @@ public class MjestoControler implements ActionListener {
 			DodavanjeFrame dm = new DodavanjeFrame();
 			dm.dodavanjeMjesta();
 			dm.show();
+
+			centerView.removeAll();
+			view.setState(new ReadyState(view));
 		}
 
 	}
