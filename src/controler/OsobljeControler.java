@@ -1,5 +1,6 @@
 package controler;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,18 +20,32 @@ import view.ApplicationView;
 import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
+import view.ToolbarView;
 
 public class OsobljeControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	public boolean zabrana = true;
 	TableModel tableModel = null;
+	public ToolbarView toolbar = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		Korisnik.getInstance().setTrenutnaTabela("osoblje");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+
+		// postavljanje novog toolbara za tabelu osoblje i kreiranje filtera
+		view.remove(view.getToolbarView());
+		view.toolbarView = new ToolbarView();
+		view.add(view.toolbarView, BorderLayout.NORTH);
+
+		toolbar = view.getToolbarView();
+		toolbar.podesiToolbar();
+		toolbar.dodajListenere();
+		toolbar.postaviFilterZaOsobje();
+		toolbar.repaint();
+		toolbar.revalidate();
 
 		centerView = view.getCenterView();
 		centerView.removeAll();

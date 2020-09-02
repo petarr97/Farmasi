@@ -8,6 +8,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
 
 import dbpackage.DBconnection;
+import model.Korisnik;
 
 public class ProcedureClass {
 
@@ -38,14 +39,16 @@ public class ProcedureClass {
 			}
 			stm.execute();
 			rs = stm.getResultSet();
-
+			Korisnik.getInstance().uspjesno = true;
 		} catch (SQLIntegrityConstraintViolationException error) {
 			JOptionPane.showMessageDialog(null, error.toString());
-
+			Korisnik.getInstance().uspjesno = false;
 		} catch (NullPointerException error) {
 			JOptionPane.showMessageDialog(null, error.toString());
+			Korisnik.getInstance().uspjesno = false;
 		} catch (Exception error) {
 			JOptionPane.showMessageDialog(null, error.toString());
+			Korisnik.getInstance().uspjesno = false;
 		}
 		return rs;
 	}

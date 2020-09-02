@@ -24,13 +24,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import controler.StavkeControler;
-import controler.NarduzbeControler;
-import controler.MjestoControler;
 import controler.KupciControler;
+import controler.MjestoControler;
+import controler.NarduzbeControler;
 import controler.OsobljeControler;
-import controler.TipPlacanjControler;
 import controler.ProizvodiControler;
+import controler.StavkeControler;
+import controler.TipPlacanjControler;
 import model.TableBrowserModel;
 
 public class TableBrowserView extends JPanel {
@@ -39,7 +39,7 @@ public class TableBrowserView extends JPanel {
 
 	public TableBrowserView() {
 		setPreferredSize(new Dimension(250, 0));
-		setBackground(Color.decode("#303030"));
+		setBackground(Color.decode("#d9dedd"));
 		Border border = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(240, 240, 240));
 		setBorder(border);
 
@@ -47,7 +47,7 @@ public class TableBrowserView extends JPanel {
 		details.setOpaque(false);
 		details.setLocation(new Point(0, 0));
 		details.setPreferredSize(new Dimension(0, 0));
-		details.setBackground(Color.decode("#303030"));
+		details.setBackground(Color.decode("#d9dedd"));
 		Border border1 = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(240, 240, 240));
 		details.setBorder(border1);
 
@@ -58,7 +58,7 @@ public class TableBrowserView extends JPanel {
 
 			btn.setPreferredSize(new Dimension(230, 30));
 			btn.addActionListener(dodavanjeActionListenera(details)[brojac++]);
-			btn.setBackground(Color.decode("#66b3ff"));
+			btn.setBackground(Color.decode("#d9dedd"));
 			btn.setUI(new StyledButtonUI());
 			add(btn);
 		}
@@ -146,7 +146,7 @@ public class TableBrowserView extends JPanel {
 		buttons[0].setActionCommand("prikaz");
 		buttons[0].addActionListener(new ProizvodiControler());
 
-		buttons[1] = new JButton("Dodavanje zaposlenog");
+		buttons[1] = new JButton("Dodavanje proizvoda");
 		buttons[1].setActionCommand("dodavanje");
 		buttons[1].addActionListener(new ProizvodiControler());
 
@@ -197,7 +197,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -218,7 +218,7 @@ public class TableBrowserView extends JPanel {
 
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -236,7 +236,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -256,7 +256,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 30));
 					details.setOpaque(false);
@@ -275,7 +275,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -294,7 +294,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -313,7 +313,7 @@ public class TableBrowserView extends JPanel {
 				details.repaint();
 				for (JButton btn1 : buttons1) {
 					btn1.setPreferredSize(new Dimension(230, 25));
-					btn1.setBackground(Color.decode("#1a8cff"));
+					btn1.setBackground(Color.decode("#d9dedd"));
 					btn1.setUI(new StyledButtonUI());
 					details.setPreferredSize(new Dimension(240, 25 * buttons1.length + 20));
 					details.setOpaque(false);
@@ -332,7 +332,7 @@ public class TableBrowserView extends JPanel {
 		super.paintComponent(g);
 		Image image;
 		try {
-			image = ImageIO.read(new File("./img/login.jpg"));
+			image = ImageIO.read(new File("./img/browser.jpg"));
 			Image newImage = image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT);
 			g.drawImage(newImage, 0, 0, this); // see javadoc for more info on the parameters
 
@@ -346,7 +346,7 @@ public class TableBrowserView extends JPanel {
 		JPanel filters = new JPanel();
 		filters.setLocation(new Point(0, 300));
 		filters.setPreferredSize(new Dimension(0, 80));
-		filters.setBackground(Color.decode("#303030"));
+		filters.setBackground(Color.decode("#d9dedd"));
 		Border border1 = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(240, 240, 240));
 		filters.setLayout(new BoxLayout(filters, BoxLayout.Y_AXIS));
 		filters.setBorder(border1);

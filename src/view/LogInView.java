@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -46,7 +47,7 @@ public class LogInView extends JFrame {
 		JPanel panel = new JPanel();
 
 		setUndecorated(true);
-		setLocation(new Point(200, 200));
+		setLocation(new Point((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - 225.), 100));
 		setSize(new Dimension(400, 350));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -90,6 +91,7 @@ public class LogInView extends JFrame {
 		usernameLbl.setFont(new Font("Calibri", Font.BOLD, 20));
 		usernameLbl.setLocation(new Point(100, 70));
 		usernameLbl.setSize(new Dimension(200, 30));
+		usernameLbl.setForeground(Color.white);
 		panel.add(usernameLbl);
 
 		username = new JTextField();
@@ -102,6 +104,7 @@ public class LogInView extends JFrame {
 		passwordLbl.setFont(new Font("Calibri", Font.BOLD, 20));
 		passwordLbl.setLocation(new Point(100, 140));
 		passwordLbl.setSize(new Dimension(200, 30));
+		passwordLbl.setForeground(Color.white);
 		panel.add(passwordLbl);
 
 		password = new JPasswordField();

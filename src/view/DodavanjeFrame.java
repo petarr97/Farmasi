@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -45,11 +47,6 @@ public class DodavanjeFrame extends JFrame {
 	public ArrayList<Element> narudzbe = new ArrayList<Element>();
 	public ArrayList<Element> proizvodi = new ArrayList<Element>();
 
-	public JTextField ime = null;
-	public JTextField prezime = null;
-	public JTextField datumRodjenja = null;
-	public JTextField datumZaposlenja = null;
-
 	public JComboBox<String> proizvodiCb = null;
 	public JComboBox<String> narduzbeCb = null;
 	public JComboBox<String> gradoviCb = null;
@@ -57,6 +54,10 @@ public class DodavanjeFrame extends JFrame {
 	public JComboBox<String> kupciCb = null;
 	public JComboBox<String> radniciCb = null;
 
+	public JTextField ime = null;
+	public JTextField prezime = null;
+	public JTextField datumRodjenja = null;
+	public JTextField datumZaposlenja = null;
 	public JTextField cijena = null;
 	public JTextField broj = null;
 	public JTextField status = null;
@@ -93,14 +94,14 @@ public class DodavanjeFrame extends JFrame {
 				}
 			}
 		});
-		setLocation(new Point(100, 100));
-		setSize(new Dimension(600, 600));
+		setLocation(new Point((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2 - 225.), 100));
+		setSize(new Dimension(450, 450));
 		setBackground(Color.blue);
 
 		panel.setLayout(null);
 		panel.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 		panel.setLocation(new Point(0, 0));
-		panel.setSize(new Dimension(600, 600));
+		panel.setSize(new Dimension(450, 450));
 		panel.setBackground(Color.decode("#98B4D4"));
 
 	}
@@ -112,7 +113,7 @@ public class DodavanjeFrame extends JFrame {
 		JLabel izborPoslovnogSistema = new JLabel("Tip placanja");
 		izborPoslovnogSistema.setFont(new Font("Calibri", Font.PLAIN, 20));
 		izborPoslovnogSistema.setLocation(new Point(100, 70));
-		izborPoslovnogSistema.setSize(new Dimension(600, 30));
+		izborPoslovnogSistema.setSize(new Dimension(450, 30));
 		panel.add(izborPoslovnogSistema);
 
 		String[] tip = getTipPlacanja();
@@ -125,7 +126,7 @@ public class DodavanjeFrame extends JFrame {
 		JLabel kupciLbl = new JLabel("Kupac");
 		kupciLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
 		kupciLbl.setLocation(new Point(100, 130));
-		kupciLbl.setSize(new Dimension(600, 30));
+		kupciLbl.setSize(new Dimension(450, 30));
 		panel.add(kupciLbl);
 
 		String[] kupci = getKupci();
@@ -138,7 +139,7 @@ public class DodavanjeFrame extends JFrame {
 		JLabel radniciLbl = new JLabel("Radnik");
 		radniciLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
 		radniciLbl.setLocation(new Point(100, 190));
-		radniciLbl.setSize(new Dimension(600, 30));
+		radniciLbl.setSize(new Dimension(450, 30));
 		panel.add(radniciLbl);
 
 		String[] radnici = getRadnici();
@@ -368,6 +369,8 @@ public class DodavanjeFrame extends JFrame {
 		datumZaposlenja.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(datumZaposlenja);
 
+		panel.add(Box.createVerticalStrut(15));
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
 		confirmButton.setUI(new StyledButtonUI());
@@ -384,11 +387,15 @@ public class DodavanjeFrame extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 
 	}
 
@@ -459,6 +466,8 @@ public class DodavanjeFrame extends JFrame {
 		maticniBroj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(maticniBroj);
 
+		panel.add(Box.createVerticalStrut(15));
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
 		confirmButton.setUI(new StyledButtonUI());
@@ -475,11 +484,15 @@ public class DodavanjeFrame extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 
 	}
 
@@ -503,6 +516,7 @@ public class DodavanjeFrame extends JFrame {
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(ime);
+		panel.add(Box.createVerticalStrut(15));
 
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
@@ -520,12 +534,15 @@ public class DodavanjeFrame extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
-
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 	}
 
 	// ubacivanje korisnika u bazu
@@ -564,6 +581,8 @@ public class DodavanjeFrame extends JFrame {
 		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(broj);
 
+		panel.add(Box.createVerticalStrut(15));
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
 		confirmButton.setUI(new StyledButtonUI());
@@ -579,12 +598,15 @@ public class DodavanjeFrame extends JFrame {
 			}
 		});
 		panel.add(confirmButton);
-
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 
 	}
 
@@ -607,6 +629,8 @@ public class DodavanjeFrame extends JFrame {
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(ime);
 
+		panel.add(Box.createVerticalStrut(15));
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
 		confirmButton.setUI(new StyledButtonUI());
@@ -623,11 +647,15 @@ public class DodavanjeFrame extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 
 	}
 
@@ -676,6 +704,8 @@ public class DodavanjeFrame extends JFrame {
 		cijena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		panel.add(cijena);
 
+		panel.add(Box.createVerticalStrut(15));
+
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
 		confirmButton.setUI(new StyledButtonUI());
@@ -692,11 +722,15 @@ public class DodavanjeFrame extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		int i = 0;
 		for (Component c : panel.getComponents()) {
+			i++;
 			c.setMaximumSize(new Dimension(200, 30));
 			((JComponent) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}
+		panel.setSize(new Dimension(450, i * 35));
+		setSize(new Dimension(450, i * 35));
 
 	}
 

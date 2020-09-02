@@ -33,7 +33,7 @@ public class ApplicationView extends JFrame {
 	public ApplicationView() {
 
 		setLayout(new BorderLayout());
-		setTitle("Aplikacija za upravljanje smještajnim jedinicama");
+		setTitle("Farmasi aplikacija");
 		setBackground(Color.decode("#E9FDFF"));
 
 		toolbarView = new ToolbarView();

@@ -34,7 +34,6 @@ public class ReadyState extends State {
 	@Override
 	public void setStatusBar() {
 		this.appView.infoPanel.rows.setText("");
-		this.appView.infoPanel.stanje.setText("Ready State");
 	}
 
 	@Override

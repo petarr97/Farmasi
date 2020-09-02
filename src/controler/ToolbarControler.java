@@ -52,22 +52,22 @@ public class ToolbarControler implements ActionListener {
 				dodavanje.dodavanjeNarudzbe();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("osoblje")) {
-				// dodavanje.dodavanjeSmjestajneJedinice();
+				dodavanje.dodavanjeRadnika();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("kupci")) {
-				// dodavanje.dodavanjeZaposlenog();
+				dodavanje.dodavanjeKupca();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("proizvodi")) {
-				// dodavanje.dodavanjeRezervacije();
+				dodavanje.dodavanjeProizvoda();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("stavke")) {
-				// dodavanje.dodavanjeRezervacije();
+				dodavanje.dodavanjeStavkeNarudzbe();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
-				// dodavanje.dodavanjeRezervacije();
+				dodavanje.dodavanjeMjesta();
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
-				// dodavanje.dodavanjeRezervacije();
+				dodavanje.dodavanjeTipaPlacanja();
 				dodavanje.show();
 			}
 		} else if (e.getActionCommand().equals("deleteRow")) {
@@ -84,10 +84,12 @@ public class ToolbarControler implements ActionListener {
 
 					String procedura = "{call OBRISI_NARUDZBU(?)}";
 					ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value));
-
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 				}
 			}
 			if (Korisnik.getInstance().getTrenutnaTabela().equals("osoblje")) {
@@ -103,9 +105,12 @@ public class ToolbarControler implements ActionListener {
 					String procedura = "{call OBRISI_RADNIKA(?)}";
 					ProcedureClass.getInstance().procedura2(procedura, Integer.valueOf(value));
 
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 				}
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("kupci")) {
 				int column = 0;
@@ -117,9 +122,12 @@ public class ToolbarControler implements ActionListener {
 				if (confirm == JOptionPane.YES_OPTION) {
 
 					ProcedureClass.procedura2("{ call OBRISI_KUPCA(?)}", Integer.valueOf(value));
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 
 				}
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("proizvodi")) {
@@ -132,9 +140,12 @@ public class ToolbarControler implements ActionListener {
 				if (confirm == JOptionPane.YES_OPTION) {
 
 					ProcedureClass.procedura2("{ call OBRISI_PROIZVOD(?)}", Integer.valueOf(value));
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 
 				}
 
@@ -148,9 +159,12 @@ public class ToolbarControler implements ActionListener {
 				if (confirm == JOptionPane.YES_OPTION) {
 
 					ProcedureClass.procedura2("{ call OBRISI_STAVKE_NARUDZBE(?)}", Integer.valueOf(value));
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 
 				}
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
@@ -163,9 +177,12 @@ public class ToolbarControler implements ActionListener {
 				if (confirm == JOptionPane.YES_OPTION) {
 
 					ProcedureClass.procedura2("{ call OBRISI_MJESTO(?)}", Integer.valueOf(value));
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 
 				}
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
@@ -178,9 +195,12 @@ public class ToolbarControler implements ActionListener {
 				if (confirm == JOptionPane.YES_OPTION) {
 
 					ProcedureClass.procedura2("{ call OBRISI_TIP_PLACANJA(?)}", Integer.valueOf(value));
-					view.getCenterView().newModel.removeRow(row);
-					view.getCenterView().revalidate();
-					view.getCenterView().repaint();
+					if (Korisnik.getInstance().uspjesno) {
+						view.getCenterView().newModel.removeRow(row);
+						view.getCenterView().revalidate();
+						view.getCenterView().repaint();
+						Korisnik.getInstance().uspjesno = false;
+					}
 
 				}
 			}
@@ -247,7 +267,7 @@ public class ToolbarControler implements ActionListener {
 			}
 		} else if (e.getActionCommand().equals("filterNarudzbeIme")) {
 			String status = view.getToolbarView().filter.getText();
-			System.out.println(status);
+
 			if (!status.equals(""))
 				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
 					if (!status.equals(centerView.newModel.getValueAt(i, 5))) {
@@ -255,7 +275,122 @@ public class ToolbarControler implements ActionListener {
 						i--;
 					}
 				}
+		} else if (e.getActionCommand().equals("filterImeKupca")) {
+			String status = view.getToolbarView().filter.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 3))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterBrojTelefona")) {
+			String status = view.getToolbarView().filter1.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 6))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterNazivProizvoda")) {
+			String status = view.getToolbarView().filter.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 1))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterCijenaProizvoda")) {
+			String status = view.getToolbarView().filter1.getText();
+			Double cijena = Double.valueOf(status);
+			Double cijena1;
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					cijena1 = (Double.valueOf((String) (centerView.newModel.getValueAt(i, 2))));
+					if (!cijena.equals(cijena1)) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+
+		} else if (e.getActionCommand().equals("filterMjesto")) {
+			String status = view.getToolbarView().filter.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 1))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterTip")) {
+			String status = view.getToolbarView().filter.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 1))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("cijenaFilter")) {
+			String status = view.getToolbarView().filter1.getText();
+			Double cijena = Double.valueOf(status);
+			Double cijena1;
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					cijena1 = (Double.valueOf((String) (centerView.newModel.getValueAt(i, 4))));
+					System.out.println(cijena + " " + cijena1);
+					if (!cijena.equals(cijena1)) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+
+		} else if (e.getActionCommand().equals("kolicinaFilter"))
+
+		{
+			String status = view.getToolbarView().filter.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 3))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterDatum")) {
+			String status = view.getToolbarView().filter1.getText();
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					if (!status.equals(centerView.newModel.getValueAt(i, 8))) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
+		} else if (e.getActionCommand().equals("filterCijenaNarudzbe")) {
+			String status = view.getToolbarView().filter1.getText();
+			Double cijena = Double.valueOf(status);
+			Double cijena1;
+
+			if (!status.equals(""))
+				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
+					cijena1 = (Double.valueOf((String) (centerView.newModel.getValueAt(i, 6))));
+					if (!cijena.equals(cijena1)) {
+						centerView.newModel.removeRow(i);
+						i--;
+					}
+				}
 		}
+
 	}
 
 	public ArrayList<Integer> vratiRezSmjestajneJedinice(int rez) {

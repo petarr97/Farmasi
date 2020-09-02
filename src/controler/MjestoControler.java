@@ -1,5 +1,6 @@
 package controler;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,17 +17,29 @@ import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
+import view.ToolbarView;
 
 public class MjestoControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	boolean zabrana = true;
 	TableModel tableModel = null;
+	ToolbarView toolbar = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+
+		view.remove(view.getToolbarView());
+		view.toolbarView = new ToolbarView();
+		view.add(view.toolbarView, BorderLayout.NORTH);
+
+		toolbar = view.getToolbarView();
+		toolbar.podesiToolbar();
+		toolbar.postaviFilterZaMjesto();
+		toolbar.dodajListenere();
+
 		centerView = view.getCenterView();
 		centerView.removeAll();
 		centerView.repaint();

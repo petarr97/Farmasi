@@ -13,6 +13,7 @@ public class Korisnik {
 	public String password;
 	public int ID;
 	public String trenutnaTabela = "";
+	public Boolean uspjesno = false;
 
 	public String getTrenutnaTabela() {
 		return trenutnaTabela;
@@ -22,11 +23,6 @@ public class Korisnik {
 		this.trenutnaTabela = trenutnaTabela;
 	}
 
-	// privilegije
-	public int dodavanje;
-	public int brisanje;
-	public int izmjena;
-	public int prikaz;
 	public int tipKorisnika;
 
 	public int getTipKorisnika() {
@@ -35,38 +31,6 @@ public class Korisnik {
 
 	public void setTipKorisnika(int tipKorisnika) {
 		this.tipKorisnika = tipKorisnika;
-	}
-
-	public int getDodavanje() {
-		return dodavanje;
-	}
-
-	public void setDodavanje(int dodavanje) {
-		this.dodavanje = dodavanje;
-	}
-
-	public int getBrisanje() {
-		return brisanje;
-	}
-
-	public void setBrisanje(int brisanje) {
-		this.brisanje = brisanje;
-	}
-
-	public int getIzmjena() {
-		return izmjena;
-	}
-
-	public void setIzmjena(int izmjena) {
-		this.izmjena = izmjena;
-	}
-
-	public int getPrikaz() {
-		return prikaz;
-	}
-
-	public void setPrikaz(int prikaz) {
-		this.prikaz = prikaz;
 	}
 
 	public int getID() {

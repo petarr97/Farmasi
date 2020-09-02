@@ -32,7 +32,6 @@ public class WorkingOnTableState extends State {
 
 	@Override
 	public void setStatusBar() {
-		this.appView.infoPanel.stanje.setText("Working on table");
 	}
 
 }

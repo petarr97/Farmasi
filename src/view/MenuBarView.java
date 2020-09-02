@@ -26,7 +26,8 @@ public class MenuBarView extends JMenuBar {
 	public JMenuItem exit = new JMenuItem();
 
 	public MenuBarView() {
-		setBackground(Color.decode("#98B4D4"));
+		setBackground(Color.decode("#d9dedd"));
+		setForeground(Color.black);
 		menuBarStavke = postavi_MenuBar();
 
 		for (int i = 0; i < menuBarStavke.length; i++) {

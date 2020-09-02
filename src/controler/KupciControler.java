@@ -1,5 +1,6 @@
 package controler;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +19,13 @@ import view.ApplicationView;
 import view.Brisanje;
 import view.DodavanjeFrame;
 import view.TableView;
+import view.ToolbarView;
 
 public class KupciControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	TableModel tableModel = null;
+	ToolbarView toolbar = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -32,6 +35,18 @@ public class KupciControler implements ActionListener {
 		if (e.getActionCommand().equals("prikaz")) {
 
 			Korisnik.getInstance().setTrenutnaTabela("kupci");
+
+			// postavljanje novog toolbara za tabelu kupci i kreiranje filtera
+			view.remove(view.getToolbarView());
+			view.toolbarView = new ToolbarView();
+			view.add(view.toolbarView, BorderLayout.NORTH);
+
+			toolbar = view.getToolbarView();
+			toolbar.podesiToolbar();
+			toolbar.dodajListenere();
+			toolbar.postaviFilterKupci();
+			toolbar.repaint();
+			toolbar.revalidate();
 
 			centerView.removeAll();
 			centerView.repaint();

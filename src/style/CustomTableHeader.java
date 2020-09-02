@@ -20,7 +20,7 @@ public class CustomTableHeader extends JLabel implements TableCellRenderer {
 		setFont(new Font("Calibri", Font.BOLD, 22));
 		setOpaque(true);
 		setForeground(Color.WHITE);
-		setBackground(Color.decode("#01A9DB"));
+		setBackground(Color.LIGHT_GRAY);
 		setHorizontalAlignment(JLabel.CENTER);
 		setBorder(BorderFactory.createEtchedBorder());
 	}

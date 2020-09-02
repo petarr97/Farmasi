@@ -1,5 +1,6 @@
 package controler;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,11 +16,13 @@ import model.TableModel;
 import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.TableView;
+import view.ToolbarView;
 
 public class StavkeControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	TableModel tableModel = null;
+	ToolbarView toolbar = null;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -28,6 +31,16 @@ public class StavkeControler implements ActionListener {
 		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 		ResultSet rs = ProcedureClass.getInstance().procedura2("{call UCITAJ_STAVKE_NARUDZBE}");
 		view = (ApplicationView) SwingUtilities.getWindowAncestor((Component) e.getSource());
+
+		view.remove(view.getToolbarView());
+		view.toolbarView = new ToolbarView();
+		view.add(view.toolbarView, BorderLayout.NORTH);
+
+		toolbar = view.getToolbarView();
+		toolbar.podesiToolbar();
+		toolbar.psotaviFilterStavke();
+		toolbar.dodajListenere();
+
 		view.setState(new WorkingOnTableState(view));
 
 		centerView = view.getCenterView();
