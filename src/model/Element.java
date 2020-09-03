@@ -4,8 +4,6 @@ public class Element {
 
 	public int id;
 	public String naziv;
-	public String tipSobe;
-	public String ps_naziv;
 	public String datum;
 	public String ime;
 
@@ -25,14 +23,6 @@ public class Element {
 		this.datum = datum;
 	}
 
-	public String getPs_naziv() {
-		return ps_naziv;
-	}
-
-	public void setPs_naziv(String ps_naziv) {
-		this.ps_naziv = ps_naziv;
-	}
-
 	public Element(String naziv, int id) {
 		this.naziv = naziv;
 		this.id = id;
@@ -48,14 +38,6 @@ public class Element {
 
 	public String getNaziv() {
 		return naziv;
-	}
-
-	public String getTipSobe() {
-		return tipSobe;
-	}
-
-	public void setTipSobe(String tipSobe) {
-		this.tipSobe = tipSobe;
 	}
 
 	public void setNaziv(String naziv) {

@@ -20,18 +20,8 @@ public class WorkingOnTableState extends State {
 	}
 
 	@Override
-	public void setMenuBar() {
-		this.appView.menuBarView.next.setEnabled(true);
-		this.appView.menuBarView.prev.setEnabled(true);
-	}
-
-	@Override
 	public void setToolBar() {
 		this.appView.getToolbarView().show();
-	}
-
-	@Override
-	public void setStatusBar() {
 	}
 
 }

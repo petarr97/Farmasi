@@ -20,20 +20,9 @@ public class ReadyState extends State {
 	}
 
 	@Override
-	public void setMenuBar() {
-		this.appView.menuBarView.next.setEnabled(false);
-		this.appView.menuBarView.prev.setEnabled(false);
-	}
-
-	@Override
 	public void setToolBar() {
 		this.appView.getToolbarView().hide();
 
-	}
-
-	@Override
-	public void setStatusBar() {
-		this.appView.infoPanel.rows.setText("");
 	}
 
 	@Override

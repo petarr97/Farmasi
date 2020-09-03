@@ -16,7 +16,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -25,10 +30,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import com.mindfusion.common.Convert;
 
@@ -36,6 +44,9 @@ import Procedure.ProcedureClass;
 import model.Element;
 
 public class DodavanjeFrame extends JFrame {
+
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
 
 	public JPanel panel = null;
 	public TableView table = null;
@@ -68,6 +79,9 @@ public class DodavanjeFrame extends JFrame {
 	public JTextField email = null;
 	public JTextField www = null;
 	public JTextField adresa = null;
+	public JFormattedTextField formatText = null;
+	public JFormattedTextField formatText1 = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	JButton confirmButton = null;
 	String mode = "";
@@ -168,11 +182,14 @@ public class DodavanjeFrame extends JFrame {
 		datumLbl.setSize(new Dimension(700, 30));
 		panel.add(datumLbl);
 
-		datum = new JTextField();
-		datum.setSize(new Dimension(200, 30));
-		datum.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-		datum.setLocation(new Point(100, 350));
-		panel.add(datum);
+		Date date = new Date();
+		String dateString = formatter.format(date);
+		formatText = new JFormattedTextField(createFormatter("####-##-##"));
+		formatText.setColumns(20);
+		formatText.setLocation(new Point(100, 345));
+		formatText.setSize(new Dimension(200, 30));
+		formatText.setText(dateString);
+		panel.add(formatText);
 
 		confirmButton = new JButton("POTVRDI");
 		confirmButton.setAlignmentX(CENTER_ALIGNMENT);
@@ -184,8 +201,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertNarudzba();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateNarudzba();
+					else
+						insertNarudzba();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -288,8 +311,14 @@ public class DodavanjeFrame extends JFrame {
 
 	public void insertNarudzba() {
 
-		long date = new java.util.Date().getTime();
-		java.sql.Date sqlDate = new java.sql.Date(date);
+		java.sql.Date sqlDate = null;
+		try {
+			Date datum = formatter.parse(formatText.getText());
+			long date = datum.getTime();
+			sqlDate = new java.sql.Date(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		ProcedureClass.procedura2("{ call INSERT_NARUDZBA(?,?,?,?,?,?,?,?)}",
 				tipPlacanja.get(tipPlacanjaCb.getSelectedIndex()).id, radnici.get(radniciCb.getSelectedIndex()).id,
@@ -360,7 +389,8 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
 					getToolkit().beep();
 					e.consume();
 				}
@@ -390,17 +420,25 @@ public class DodavanjeFrame extends JFrame {
 		datumLbl.setFont(new Font("Calibri", Font.PLAIN, 20));
 		panel.add(datumLbl);
 
-		datumRodjenja = new JTextField();
-		datumRodjenja.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-		panel.add(datumRodjenja);
+		Date date = new Date();
+		String dateString = formatter.format(date);
+		formatText = new JFormattedTextField(createFormatter("####-##-##"));
+		formatText.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		formatText.setColumns(20);
+		formatText.setText(dateString);
+		panel.add(formatText);
 
 		JLabel datumLbl1 = new JLabel("Datum zaposlenja");
 		datumLbl1.setFont(new Font("Calibri", Font.PLAIN, 20));
 		panel.add(datumLbl1);
 
-		datumZaposlenja = new JTextField();
-		datumZaposlenja.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
-		panel.add(datumZaposlenja);
+		Date date1 = new Date();
+		String dateString1 = formatter.format(date);
+		formatText1 = new JFormattedTextField(createFormatter("####-##-##"));
+		formatText1.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		formatText1.setColumns(20);
+		formatText1.setText(dateString);
+		panel.add(formatText1);
 
 		panel.add(Box.createVerticalStrut(15));
 
@@ -411,11 +449,19 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateOsoblje();
-				else
-					insertOsoblje();
-				dispose();
+				if (!provjeriPolja()) {
+					Boolean validateEmail = validate(email.getText());
+					if (validateEmail == true) {
+						if (mode.equals("edit"))
+							updateOsoblje();
+						else
+							insertOsoblje();
+
+						dispose();
+					} else
+						JOptionPane.showMessageDialog(null, "Email mora biti u formatu email@primjer.com");
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja");
 			}
 		});
 		panel.add(confirmButton);
@@ -436,12 +482,22 @@ public class DodavanjeFrame extends JFrame {
 
 	// ubacivanje korisnika u bazu
 	protected void insertOsoblje() {
-		long date = new java.util.Date().getTime();
-		java.sql.Date sqlDate = new java.sql.Date(date);
+		java.sql.Date sqlDate = null;
+		java.sql.Date sqlDate1 = null;
+		try {
+			Date datum = formatter.parse(formatText.getText());
+			long date = datum.getTime();
+			sqlDate = new java.sql.Date(date);
+			datum = formatter.parse(formatText1.getText());
+			date = datum.getTime();
+			sqlDate1 = new java.sql.Date(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		ProcedureClass.procedura2("{ call INSERT_RADNIK(?,?,?,?,?,?,?,?)}",
 				gradovi.get(gradoviCb.getSelectedIndex()).id, ime.getText(), prezime.getText(), broj.getText(),
-				email.getText(), adresa.getText(), sqlDate, sqlDate);
+				email.getText(), adresa.getText(), sqlDate, sqlDate1);
 	}
 
 	// kreiranje prozora za dodavanje kupca
@@ -464,6 +520,17 @@ public class DodavanjeFrame extends JFrame {
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		ime.setPreferredSize(new Dimension(0, 30));
+		ime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(ime);
 
 		JLabel l1 = new JLabel("Prezime");
@@ -473,6 +540,17 @@ public class DodavanjeFrame extends JFrame {
 		prezime = new JTextField();
 		prezime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		prezime.setPreferredSize(new Dimension(0, 30));
+		prezime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(prezime);
 
 		JLabel brlbl = new JLabel("Br telefona");
@@ -482,6 +560,17 @@ public class DodavanjeFrame extends JFrame {
 		broj = new JTextField();
 		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		broj.setPreferredSize(new Dimension(0, 30));
+		broj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(broj);
 
 		JLabel adresalLbl = new JLabel("Adresa");
@@ -499,6 +588,16 @@ public class DodavanjeFrame extends JFrame {
 
 		maticniBroj = new JTextField();
 		maticniBroj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		maticniBroj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(maticniBroj);
 
 		panel.add(Box.createVerticalStrut(15));
@@ -510,11 +609,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateKupca();
-				else
-					insertKupac();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateKupca();
+					else
+						insertKupac();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -535,11 +637,13 @@ public class DodavanjeFrame extends JFrame {
 
 	// ubacivanje korisnika u bazu
 	protected void insertKupac() {
+
 		long date = new java.util.Date().getTime();
 		java.sql.Date sqlDate = new java.sql.Date(date);
 
 		ProcedureClass.procedura2("{ call INSERT_KUPAC(?,?,?,?,?,?)}", gradovi.get(gradoviCb.getSelectedIndex()).id,
 				ime.getText(), prezime.getText(), adresa.getText(), maticniBroj.getText(), broj.getText());
+
 	}
 
 	// kreiranje prozora za dodavanje mjesta
@@ -552,6 +656,17 @@ public class DodavanjeFrame extends JFrame {
 
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		ime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(ime);
 		panel.add(Box.createVerticalStrut(15));
 
@@ -562,11 +677,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateMjesto();
-				else
-					insertMjesto();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateMjesto();
+					else
+						insertMjesto();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -601,6 +719,17 @@ public class DodavanjeFrame extends JFrame {
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		ime.setPreferredSize(new Dimension(0, 30));
+		ime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(ime);
 
 		JLabel l1 = new JLabel("Cijena");
@@ -610,6 +739,17 @@ public class DodavanjeFrame extends JFrame {
 		cijena = new JTextField();
 		cijena.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		cijena.setPreferredSize(new Dimension(0, 30));
+		cijena.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == '.') | (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(cijena);
 
 		JLabel pdvLbl = new JLabel("PDV stopa");
@@ -618,6 +758,17 @@ public class DodavanjeFrame extends JFrame {
 
 		broj = new JTextField();
 		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		broj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c >= 'a') && (c <= '+') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(broj);
 
 		panel.add(Box.createVerticalStrut(15));
@@ -629,11 +780,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateProizvod();
-				else
-					insertProizvod();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateProizvod();
+					else
+						insertProizvod();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -668,6 +822,17 @@ public class DodavanjeFrame extends JFrame {
 
 		ime = new JTextField();
 		ime.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+		ime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(ime);
 
 		panel.add(Box.createVerticalStrut(15));
@@ -679,11 +844,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateTipPlacanja();
-				else
-					insertTipPlacanja();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateTipPlacanja();
+					else
+						insertTipPlacanja();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -737,6 +905,17 @@ public class DodavanjeFrame extends JFrame {
 		broj = new JTextField();
 		broj.setFont(new Font("Calibri", Font.LAYOUT_LEFT_TO_RIGHT, 14));
 		broj.setPreferredSize(new Dimension(0, 30));
+		broj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9')) || (c == '.') || (c == KeyEvent.VK_BACK_SPACE)
+						|| (c == KeyEvent.VK_DELETE)) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		panel.add(broj);
 
 		panel.add(Box.createVerticalStrut(15));
@@ -748,11 +927,14 @@ public class DodavanjeFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mode.equals("edit"))
-					updateStavke();
-				else
-					insertNoveStavke();
-				dispose();
+				if (!provjeriPolja()) {
+					if (mode.equals("edit"))
+						updateStavke();
+					else
+						insertNoveStavke();
+					dispose();
+				} else
+					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
 		});
 		panel.add(confirmButton);
@@ -820,7 +1002,7 @@ public class DodavanjeFrame extends JFrame {
 	protected void insertNoveStavke() {
 		ProcedureClass.procedura2("{ call INSERT_STAVKENARUDZBE(?,?,?)}",
 				narudzbe.get(narduzbeCb.getSelectedIndex()).id, proizvodi.get(proizvodiCb.getSelectedIndex()).id,
-				Convert.toInt16(broj.getText()));
+				Integer.valueOf(broj.getText()));
 	}
 
 	// podesavanje edit za mjesto
@@ -1036,4 +1218,63 @@ public class DodavanjeFrame extends JFrame {
 
 	}
 
+	public static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.find();
+	}
+
+	public Boolean provjeriPolja() {
+		for (Component c : panel.getComponents()) {
+			if (c instanceof JTextField)
+				if (((JTextField) c).getText().isEmpty())
+					return true;
+		}
+		return false;
+	}
+
+	private MaskFormatter createFormatter(String s) {
+		MaskFormatter formatter = null;
+		try {
+			formatter = new MaskFormatter(s);
+		} catch (java.text.ParseException exc) {
+			System.err.println("formatter is bad: " + exc.getMessage());
+			System.exit(-1);
+		}
+		return formatter;
+	}
+
+	// podesavanje edit za narudzbe
+	public void podesiNarudzbe(String value, TableView table, int row) {
+		this.mode = "edit";
+		this.table = table;
+		this.row = row;
+
+		this.editId = Integer.valueOf(value);
+		ResultSet rs = ProcedureClass.procedura2("{ call UCITAJ_NARUDZBU_PO_ID(?)}", value);
+		try {
+			while (rs.next()) {
+				try {
+					this.status.setText(rs.getString(6));
+					this.formatText.setText(rs.getString(5));
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.kupciCb.enable(false);
+		this.radniciCb.enable(false);
+		this.formatText.enable(false);
+	}
+
+	// update narudzba
+	public void updateNarudzba() {
+		ProcedureClass.procedura2("{call IZMIJENI_NARUDZBU(?,?,?)}", editId,
+				tipPlacanja.get(tipPlacanjaCb.getSelectedIndex()).id, status.getText());
+		this.table.newModel.setValueAt(tipPlacanja.get(tipPlacanjaCb.getSelectedIndex()).id, row, 1);
+		this.table.newModel.setValueAt(this.status.getText(), row, 5);
+
+	}
 }

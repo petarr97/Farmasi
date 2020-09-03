@@ -13,7 +13,6 @@ import state.ReadyState;
 import state.WorkingOnTableState;
 import view.ApplicationView;
 import view.DodavanjeFrame;
-import view.MenuBarView;
 import view.TableView;
 import view.ToolbarView;
 
@@ -25,13 +24,6 @@ public class ToolbarControler implements ActionListener {
 	public ToolbarControler(ToolbarView toolbar) {
 
 		view = (ApplicationView) SwingUtilities.getWindowAncestor(toolbar);
-		centerView = view.getCenterView();
-
-	}
-
-	public ToolbarControler(MenuBarView menuBar) {
-
-		view = (ApplicationView) SwingUtilities.getWindowAncestor(menuBar);
 		centerView = view.getCenterView();
 
 	}
@@ -212,7 +204,6 @@ public class ToolbarControler implements ActionListener {
 				centerView.getResultSetTable().setRowSelectionInterval(row + 1, row + 1);
 
 			row = centerView.getResultSetTable().getSelectedRow();
-			view.getInfoPanel().rows.setText("Selektovani red: " + (row + 1) + "/" + (rows + 1));
 
 		} else if (e.getActionCommand().contentEquals("prev")) {
 			int row = centerView.getResultSetTable().getSelectedRow();
@@ -224,7 +215,6 @@ public class ToolbarControler implements ActionListener {
 				centerView.getResultSetTable().setRowSelectionInterval(row - 1, row - 1);
 
 			row = centerView.getResultSetTable().getSelectedRow();
-			view.getInfoPanel().rows.setText("Selektovani red: " + (row + 1) + "/" + (lastRow + 1));
 		} else if (e.getActionCommand().contentEquals("editRow")) {
 
 			int column = 0;
@@ -232,14 +222,12 @@ public class ToolbarControler implements ActionListener {
 			String value = centerView.getResultSetTable().getModel().getValueAt(row, column).toString();
 
 			if (Korisnik.getInstance().getTrenutnaTabela().equals("narudzbe")) {
+				dodavanje.dodavanjeNarudzbe();
+				dodavanje.podesiNarudzbe(value, centerView, row);
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("mjesto")) {
 				dodavanje.dodavanjeMjesta();
 				dodavanje.podesiDodavanjeMjesta(value, centerView, row);
-				dodavanje.show();
-			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("korisnik")) {
-				// dodavanje.dodavanjeZaposlenog();
-				// dodavanje.podesiVrijednostiKorisnika(Integer.valueOf(value));
 				dodavanje.show();
 			} else if (Korisnik.getInstance().getTrenutnaTabela().equals("tip")) {
 				dodavanje.dodavanjeTipaPlacanja();

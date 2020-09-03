@@ -23,7 +23,7 @@ import javax.swing.table.TableColumn;
 
 import style.CustomTableHeader;
 
-public class TableView extends JPanel implements ObserverInterface {
+public class TableView extends JPanel {
 
 	public JTable resultSetTable = null;
 	public model.TableModel newModel = null;
@@ -115,22 +115,9 @@ public class TableView extends JPanel implements ObserverInterface {
 		}
 	}
 
-	@Override
-	public void updateAll() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update() {
 		resultSetTable.setModel(newModel);
 		urediTabelu();
-	}
-
-	@Override
-	public void subscribe(Component component) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

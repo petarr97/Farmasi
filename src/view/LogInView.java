@@ -16,7 +16,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -41,6 +40,7 @@ public class LogInView extends JFrame {
 	public JTextField username;
 	public JPasswordField password;
 	public JButton confirmButton;
+	public JButton registration;
 
 	public LogInView() {
 		setLayout(null);
@@ -116,7 +116,7 @@ public class LogInView extends JFrame {
 
 		confirmButton = new JButton("ULOGUJ SE");
 		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
-		confirmButton.setLocation(new Point(110, 250));
+		confirmButton.setLocation(new Point(110, 230));
 		confirmButton.setSize(new Dimension(180, 40));
 		confirmButton.setUI(new StyledButtonUI());
 		confirmButton.addActionListener(new ActionListener() {
@@ -128,12 +128,18 @@ public class LogInView extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		registration = new JButton("REGISTRUJ SE");
+		registration.setMnemonic(KeyEvent.VK_ENTER);
+		registration.setLocation(new Point(110, 280));
+		registration.setSize(new Dimension(180, 10));
+		registration.setForeground(Color.black);
+		registration.setContentAreaFilled(false);
+		registration.setBorderPainted(false);
+		registration.setOpaque(false);
+
+		panel.add(registration);
+
 		panel.add(closeButton);
-
-	}
-
-	private void setBackground(BufferedImage read) {
-		// TODO Auto-generated method stub
 
 	}
 

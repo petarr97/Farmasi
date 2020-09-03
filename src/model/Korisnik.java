@@ -15,6 +15,14 @@ public class Korisnik {
 	public String trenutnaTabela = "";
 	public Boolean uspjesno = false;
 
+	public static Korisnik getInstance() {
+		if (instance == null)
+			instance = new Korisnik();
+
+		return instance;
+
+	}
+
 	public String getTrenutnaTabela() {
 		return trenutnaTabela;
 	}
@@ -23,30 +31,12 @@ public class Korisnik {
 		this.trenutnaTabela = trenutnaTabela;
 	}
 
-	public int tipKorisnika;
-
-	public int getTipKorisnika() {
-		return tipKorisnika;
-	}
-
-	public void setTipKorisnika(int tipKorisnika) {
-		this.tipKorisnika = tipKorisnika;
-	}
-
 	public int getID() {
 		return ID;
 	}
 
 	public void setID(int iD) {
 		ID = iD;
-	}
-
-	public static Korisnik getInstance() {
-		if (instance == null)
-			instance = new Korisnik();
-
-		return instance;
-
 	}
 
 	public String getUsername() {

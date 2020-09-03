@@ -33,32 +33,11 @@ public class StatusBar extends JPanel {
 
 	public void postaviPodatke(String username) {
 
-		String tip_korisnika;
-		int tip = Korisnik.getInstance().tipKorisnika;
-		if (tip == 1)
-			tip_korisnika = "Administrator";
-		else if (tip == 2)
-			tip_korisnika = "Menadzer";
-		else
-			tip_korisnika = "Radnik";
-
 		JLabel label = new JLabel("Ulogovani ste kao: " + username);
 		label.setLocation(5, 0);
 		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		label.setSize(new Dimension(300, 20));
 		add(label);
-
-		label1 = new JLabel("Tip korisnika: " + tip_korisnika);
-		label1.setLocation(5, 20);
-		label1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		label1.setSize(new Dimension(300, 20));
-		add(label1);
-
-		rows = new JLabel();
-		rows.setLocation(300, 0);
-		rows.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		rows.setSize(new Dimension(250, 20));
-		add(rows);
 
 		time();
 

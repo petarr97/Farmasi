@@ -31,10 +31,8 @@ import controler.OsobljeControler;
 import controler.ProizvodiControler;
 import controler.StavkeControler;
 import controler.TipPlacanjControler;
-import model.TableBrowserModel;
 
 public class TableBrowserView extends JPanel {
-	public TableBrowserModel tableBrowserModel;
 	public JButton[] buttons;
 
 	public TableBrowserView() {
