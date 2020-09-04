@@ -13,8 +13,8 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
-import state.ReadyState;
-import state.WorkingOnTableState;
+import toolbarpackage.toolbarOff;
+import toolbarpackage.toolbarOn;
 import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
@@ -46,7 +46,7 @@ public class ProizvodiControler implements ActionListener {
 		centerView.removeAll();
 		centerView.repaint();
 
-		view.setState(new WorkingOnTableState(view));
+		view.setState(new toolbarOn(view));
 
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("prikaz")) {
@@ -92,7 +92,7 @@ public class ProizvodiControler implements ActionListener {
 			dodajKorisnik.show();
 
 			centerView.removeAll();
-			view.setState(new ReadyState(view));
+			view.setState(new toolbarOff(view));
 		}
 
 	}

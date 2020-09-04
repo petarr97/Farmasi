@@ -12,7 +12,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import model.Korisnik;
-import state.ReadyState;
+import toolbarpackage.toolbarOff;
 
 public class ApplicationView extends JFrame {
 
@@ -21,9 +21,9 @@ public class ApplicationView extends JFrame {
 	public LogInView logInView;
 	public TableView centerView;
 	public StatusBar infoPanel;
-	public state.State state;
+	public toolbarpackage.toolbarState state;
 
-	public void setState(state.State state) {
+	public void setState(toolbarpackage.toolbarState state) {
 		this.state = state;
 	}
 
@@ -47,7 +47,7 @@ public class ApplicationView extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		setState(new ReadyState(this));
+		setState(new toolbarOff(this));
 		toolbarView.dodajListenere();
 
 	}

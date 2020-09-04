@@ -4,11 +4,11 @@
  * Purpose: Defines the Interface State
  ***********************************************************************/
 
-package state;
+package toolbarpackage;
 
 import view.ApplicationView;
 
-public abstract class State {
+public abstract class toolbarState {
 	public ApplicationView appView = null;
 
 	public void setMenuBar() {

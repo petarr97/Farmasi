@@ -2,6 +2,9 @@ package controler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -9,8 +12,8 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
-import state.ReadyState;
-import state.WorkingOnTableState;
+import toolbarpackage.toolbarOff;
+import toolbarpackage.toolbarOn;
 import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
@@ -20,6 +23,7 @@ public class ToolbarControler implements ActionListener {
 	ApplicationView view = null;
 	TableView centerView = null;
 	TableModel tableModel = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	public ToolbarControler(ToolbarView toolbar) {
 
@@ -31,11 +35,11 @@ public class ToolbarControler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		view.setState(new WorkingOnTableState(view));
+		view.setState(new toolbarOn(view));
 		DodavanjeFrame dodavanje = new DodavanjeFrame();
 		if (e.getActionCommand().equals("addRow")) {
 
-			view.setState(new ReadyState(view));
+			view.setState(new toolbarOff(view));
 
 			if (Korisnik.getInstance().getTrenutnaTabela().equals("narudzbe")) {
 				dodavanje.dodavanjeNarudzbe();
@@ -353,10 +357,18 @@ public class ToolbarControler implements ActionListener {
 				}
 		} else if (e.getActionCommand().equals("filterDatum")) {
 			String status = view.getToolbarView().filter1.getText();
+			java.sql.Date sqlDate = null;
 
 			if (!status.equals(""))
 				for (int i = 0; i < centerView.newModel.getRowCount(); i++) {
-					if (!status.equals(centerView.newModel.getValueAt(i, 8))) {
+					try {
+						Date datum = formatter.parse(centerView.newModel.getValueAt(i, 8).toString());
+						long date = datum.getTime();
+						sqlDate = new java.sql.Date(date);
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
+					if (!status.equals(sqlDate.toString())) {
 						centerView.newModel.removeRow(i);
 						i--;
 					}

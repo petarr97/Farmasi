@@ -4,13 +4,13 @@
  * Purpose: Defines the Class ReadyState
  ***********************************************************************/
 
-package state;
+package toolbarpackage;
 
 import view.ApplicationView;
 
-public class ReadyState extends State {
+public class toolbarOff extends toolbarState {
 
-	public ReadyState(ApplicationView appView) {
+	public toolbarOff(ApplicationView appView) {
 		this.appView = appView;
 
 		setTableView();

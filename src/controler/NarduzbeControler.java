@@ -13,8 +13,8 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
-import state.ReadyState;
-import state.WorkingOnTableState;
+import toolbarpackage.toolbarOff;
+import toolbarpackage.toolbarOn;
 import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
@@ -48,7 +48,7 @@ public class NarduzbeControler implements ActionListener {
 
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("prikaz")) {
-			view.setState(new WorkingOnTableState(view));
+			view.setState(new toolbarOn(view));
 
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			String[] columnNames = null;
@@ -101,7 +101,7 @@ public class NarduzbeControler implements ActionListener {
 			dodavanje.show();
 
 			centerView.removeAll();
-			view.setState(new ReadyState(view));
+			view.setState(new toolbarOff(view));
 		}
 
 	}

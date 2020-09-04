@@ -47,6 +47,7 @@ public class DodavanjeFrame extends JFrame {
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	public JPanel panel = null;
 	public TableView table = null;
@@ -81,7 +82,6 @@ public class DodavanjeFrame extends JFrame {
 	public JTextField adresa = null;
 	public JFormattedTextField formatText = null;
 	public JFormattedTextField formatText1 = null;
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	JButton confirmButton = null;
 	String mode = "";
@@ -202,11 +202,14 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!provjeriPolja()) {
-					if (mode.equals("edit"))
-						updateNarudzba();
-					else
-						insertNarudzba();
-					dispose();
+					if (dateValidate(formatText.getText())) {
+						if (mode.equals("edit"))
+							updateNarudzba();
+						else
+							insertNarudzba();
+						dispose();
+					} else
+						JOptionPane.showMessageDialog(null, "Neispravan format datuma!!!");
 				} else
 					JOptionPane.showMessageDialog(null, "Morate popuniti sva polja!!!");
 			}
@@ -389,7 +392,7 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == KeyEvent.VK_BACK_SPACE)
+				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == ' ') || (c == KeyEvent.VK_BACK_SPACE)
 						|| (c == KeyEvent.VK_DELETE))) {
 					getToolkit().beep();
 					e.consume();
@@ -452,12 +455,15 @@ public class DodavanjeFrame extends JFrame {
 				if (!provjeriPolja()) {
 					Boolean validateEmail = validate(email.getText());
 					if (validateEmail == true) {
-						if (mode.equals("edit"))
-							updateOsoblje();
-						else
-							insertOsoblje();
+						if (dateValidate(formatText.getText()) && dateValidate(formatText1.getText())) {
+							if (mode.equals("edit"))
+								updateOsoblje();
+							else
+								insertOsoblje();
 
-						dispose();
+							dispose();
+						} else
+							JOptionPane.showMessageDialog(null, "Datum mora biti u zadatom formatu!!!");
 					} else
 						JOptionPane.showMessageDialog(null, "Email mora biti u formatu email@primjer.com");
 				} else
@@ -564,7 +570,7 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == KeyEvent.VK_BACK_SPACE)
+				if (!((c >= '0') && (c <= '9') || (c == '+') || (c == ' ') || (c == KeyEvent.VK_BACK_SPACE)
 						|| (c == KeyEvent.VK_DELETE))) {
 					getToolkit().beep();
 					e.consume();
@@ -723,8 +729,8 @@ public class DodavanjeFrame extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == KeyEvent.VK_BACK_SPACE)
-						|| (c == KeyEvent.VK_DELETE))) {
+				if (!((c >= 'A') && (c <= 'Z') || (c >= 'a') && (c <= 'z') || (c == ' ')
+						|| (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
 					getToolkit().beep();
 					e.consume();
 				}
@@ -1186,8 +1192,8 @@ public class DodavanjeFrame extends JFrame {
 					this.broj.setText(rs.getString(5));
 					this.email.setText(rs.getString(6));
 					this.adresa.setText(rs.getString(7));
-					this.datumRodjenja.setText(rs.getString(8));
-					this.datumZaposlenja.setText(rs.getString(9));
+					this.formatText.setText(rs.getString(8));
+					this.formatText1.setText(rs.getString(9));
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -1196,7 +1202,6 @@ public class DodavanjeFrame extends JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// update kupca
@@ -1213,8 +1218,8 @@ public class DodavanjeFrame extends JFrame {
 		this.table.newModel.setValueAt(this.broj.getText(), row, 4);
 		this.table.newModel.setValueAt(this.email.getText(), row, 5);
 		this.table.newModel.setValueAt(this.adresa.getText(), row, 6);
-		this.table.newModel.setValueAt(this.datumRodjenja.getText(), row, 7);
-		this.table.newModel.setValueAt(this.datumZaposlenja.getText(), row, 8);
+		this.table.newModel.setValueAt(this.formatText.getText() + " 00:00:00.0", row, 7);
+		this.table.newModel.setValueAt(this.formatText1.getText() + " 00:00:00.0", row, 8);
 
 	}
 
@@ -1276,5 +1281,13 @@ public class DodavanjeFrame extends JFrame {
 		this.table.newModel.setValueAt(tipPlacanja.get(tipPlacanjaCb.getSelectedIndex()).id, row, 1);
 		this.table.newModel.setValueAt(this.status.getText(), row, 5);
 
+	}
+
+	// validacija datuma
+	public static Boolean dateValidate(String date) {
+		if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+			return true;
+		} else
+			return false;
 	}
 }

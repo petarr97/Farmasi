@@ -61,7 +61,6 @@ public class LogInView extends JFrame {
 					g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -128,13 +127,22 @@ public class LogInView extends JFrame {
 		});
 		panel.add(confirmButton);
 
+		this.getRootPane().setDefaultButton(confirmButton);
+
 		registration = new JButton("REGISTRUJ SE");
-		registration.setMnemonic(KeyEvent.VK_ENTER);
 		registration.setLocation(new Point(110, 280));
 		registration.setSize(new Dimension(180, 10));
 		registration.setForeground(Color.black);
 		registration.setContentAreaFilled(false);
 		registration.setBorderPainted(false);
+		registration.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new Registracija().show();
+			}
+		});
 		registration.setOpaque(false);
 
 		panel.add(registration);
@@ -168,4 +176,5 @@ public class LogInView extends JFrame {
 		JOptionPane.showMessageDialog(this, "Pogresno korisnicko ime ili lozinka!!!");
 
 	}
+
 }

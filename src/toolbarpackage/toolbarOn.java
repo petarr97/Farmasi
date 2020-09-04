@@ -4,15 +4,15 @@
  * Purpose: Defines the Class EditingTableState
  ***********************************************************************/
 
-package state;
+package toolbarpackage;
 
 import view.ApplicationView;
 
-public class WorkingOnTableState extends State {
+public class toolbarOn extends toolbarState {
 
 	public ApplicationView appView = null;
 
-	public WorkingOnTableState(ApplicationView appView) {
+	public toolbarOn(ApplicationView appView) {
 		this.appView = appView;
 		setToolBar();
 		setStatusBar();

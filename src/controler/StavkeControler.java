@@ -13,8 +13,8 @@ import javax.swing.SwingUtilities;
 import Procedure.ProcedureClass;
 import model.Korisnik;
 import model.TableModel;
-import state.ReadyState;
-import state.WorkingOnTableState;
+import toolbarpackage.toolbarOff;
+import toolbarpackage.toolbarOn;
 import view.ApplicationView;
 import view.DodavanjeFrame;
 import view.TableView;
@@ -45,7 +45,7 @@ public class StavkeControler implements ActionListener {
 			toolbar.psotaviFilterStavke();
 			toolbar.dodajListenere();
 
-			view.setState(new WorkingOnTableState(view));
+			view.setState(new toolbarOn(view));
 
 			centerView.removeAll();
 			centerView.repaint();
@@ -83,7 +83,7 @@ public class StavkeControler implements ActionListener {
 			df.show();
 
 			centerView.removeAll();
-			view.setState(new ReadyState(view));
+			view.setState(new toolbarOff(view));
 		}
 	}
 
