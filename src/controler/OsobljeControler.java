@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.SwingUtilities;
 
@@ -26,6 +29,7 @@ public class OsobljeControler implements ActionListener {
 	public boolean zabrana = true;
 	TableModel tableModel = null;
 	public ToolbarView toolbar = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -68,6 +72,8 @@ public class OsobljeControler implements ActionListener {
 			columnNames[7] = "Datum rodjenja";
 			columnNames[8] = "Datum zaposlenja";
 
+			java.sql.Date sqlDate = null;
+
 			int br_redova = 0;
 
 			try {
@@ -82,8 +88,25 @@ public class OsobljeControler implements ActionListener {
 					pomocna.add(rs.getString(5));
 					pomocna.add(rs.getString(6));
 					pomocna.add(rs.getString(7));
-					pomocna.add(rs.getString(8));
-					pomocna.add(rs.getString(9));
+
+					Date datum;
+					try {
+						datum = formatter.parse(rs.getString(8));
+						long date = datum.getTime();
+						sqlDate = new java.sql.Date(date);
+
+						pomocna.add(sqlDate.toString());
+
+						datum = formatter.parse(rs.getString(9));
+						date = datum.getTime();
+						sqlDate = new java.sql.Date(date);
+						pomocna.add(sqlDate.toString());
+
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
 					data.add(pomocna);
 					// pomocna.clear();
 				}

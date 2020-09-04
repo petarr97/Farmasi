@@ -1206,20 +1206,30 @@ public class DodavanjeFrame extends JFrame {
 
 	// update kupca
 	public void updateOsoblje() {
-		long date = new java.util.Date().getTime();
-		java.sql.Date sqlDate = new java.sql.Date(date);
+		java.sql.Date sqlDate = null;
+		java.sql.Date sqlDate1 = null;
+		try {
+			Date datum = formatter.parse(formatText.getText());
+			long date = datum.getTime();
+			sqlDate = new java.sql.Date(date);
+			datum = formatter.parse(formatText1.getText());
+			date = datum.getTime();
+			sqlDate1 = new java.sql.Date(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		ProcedureClass.procedura2("{call IZMIJENI_RADNIKA(?,?,?,?,?,?,?,?,?)}", this.editId,
 				gradovi.get(gradoviCb.getSelectedIndex()).id, ime.getText(), prezime.getText(), broj.getText(),
-				email.getText(), adresa.getText(), sqlDate, sqlDate);
+				email.getText(), adresa.getText(), sqlDate, sqlDate1);
 		this.table.newModel.setValueAt(gradovi.get(gradoviCb.getSelectedIndex()).id, row, 1);
 		this.table.newModel.setValueAt(this.ime.getText(), row, 2);
 		this.table.newModel.setValueAt(this.prezime.getText(), row, 3);
 		this.table.newModel.setValueAt(this.broj.getText(), row, 4);
 		this.table.newModel.setValueAt(this.email.getText(), row, 5);
 		this.table.newModel.setValueAt(this.adresa.getText(), row, 6);
-		this.table.newModel.setValueAt(this.formatText.getText() + " 00:00:00.0", row, 7);
-		this.table.newModel.setValueAt(this.formatText1.getText() + " 00:00:00.0", row, 8);
+		this.table.newModel.setValueAt(this.formatText.getText(), row, 7);
+		this.table.newModel.setValueAt(this.formatText1.getText(), row, 8);
 
 	}
 

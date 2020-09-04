@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.SwingUtilities;
 
@@ -27,6 +30,7 @@ public class NarduzbeControler implements ActionListener {
 	boolean zabrana = true;
 	TableModel tableModel = null;
 	ToolbarView toolbar = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -67,6 +71,8 @@ public class NarduzbeControler implements ActionListener {
 			columnNames[8] = "Iznos sa PDV";
 
 			int br_redova = 0;
+			java.sql.Date sqlDate = null;
+			Date datum;
 
 			try {
 
@@ -78,7 +84,17 @@ public class NarduzbeControler implements ActionListener {
 					pomocna.add(rs.getString(2));
 					pomocna.add(rs.getString(3));
 					pomocna.add(rs.getString(4));
-					pomocna.add(rs.getString(5));
+
+					try {
+						datum = formatter.parse(rs.getString(5));
+						long date = datum.getTime();
+						sqlDate = new java.sql.Date(date);
+
+						pomocna.add(sqlDate.toString());
+
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+					}
 					pomocna.add(rs.getString(6));
 					pomocna.add(rs.getString(7));
 					pomocna.add(rs.getString(8));
